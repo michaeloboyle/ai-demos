@@ -2259,6 +2259,224 @@ Claude Flow hivemind swarms transform TDD implementation from a linear developme
 
 The swarm approach is particularly valuable for this project because it combines **domain expertise** (defense manufacturing) with **technical specialization** (AI model integration, physics-based testing) in a coordinated development effort that dramatically reduces risk for executive-level demonstrations.
 
+## 13. Power Outage Recovery Strategy
+
+### **Risk Assessment**
+- **Mac Mini M2 Pro**: No built-in UPS protection
+- **External Drive**: `/Volumes/black box - Backup Data 2020/` requires stable power
+- **Model Downloads**: ~17GB transfers vulnerable to interruption
+- **Jupyter Sessions**: Notebook kernel state lost on power loss
+- **Git Repository**: Work-in-progress potentially lost
+
+### **Prevention Measures**
+
+#### **Hardware Protection**
+```bash
+# UPS recommendations for Mac Mini M2 Pro + External Drive
+# Required: 600-900VA UPS for 15-30 minute protection
+# Models: APC BE600M1, CyberPower CP685AVR
+# Cost: $80-120 investment for development continuity
+```
+
+#### **Frequent Git Commits**
+```bash
+# Automated commit every 30 minutes during active development
+git add -A && git commit -m "WIP: Auto-save checkpoint $(date '+%Y-%m-%d %H:%M')"
+
+# Pre-download commit strategy
+git add assets/helmet_images/ && git commit -m "Checkpoint: Before model download"
+```
+
+#### **External Drive Mount Verification**
+```bash
+# Check external drive before operations
+if [ ! -d "/Volumes/black box - Backup Data 2020" ]; then
+    echo "ERROR: External drive not mounted"
+    exit 1
+fi
+
+# Verify write access
+touch "/Volumes/black box - Backup Data 2020/.write_test" 2>/dev/null || {
+    echo "ERROR: External drive not writable"
+    exit 1
+}
+```
+
+### **Recovery Procedures**
+
+#### **1. Post-Outage System Check**
+```bash
+# System integrity verification
+cd /Users/michaeloboyle/Documents/github/ai-demos
+
+# Check git repository status
+git status
+git log --oneline -5
+
+# Verify external drive mount
+ls -la "/Volumes/black box - Backup Data 2020/defense-ai-models/"
+
+# Check for corrupted downloads
+python scripts/verify_model_integrity.py
+```
+
+#### **2. Model Download Recovery**
+```bash
+# Resume interrupted downloads
+cd scripts/
+python setup_defect_generation.py --resume --verify-existing
+
+# Check partial model files
+find "/Volumes/black box - Backup Data 2020/defense-ai-models/" -name "*.tmp" -o -name "*.partial"
+
+# Re-download if corrupted
+python setup_defect_generation.py --force-redownload
+```
+
+#### **3. Jupyter Notebook Recovery**
+```bash
+# Check for auto-saved notebook versions
+ls -la .ipynb_checkpoints/
+
+# Restore kernel state for active notebooks
+jupyter notebook --allow-root
+# Navigate to last checkpoint and re-run cells sequentially
+```
+
+#### **4. Work-in-Progress Recovery**
+```bash
+# Find uncommitted changes
+git diff HEAD
+git status --porcelain
+
+# Recover from stash if available
+git stash list
+git stash apply stash@{0}
+
+# Check for temporary files
+find . -name "*.tmp" -o -name "*~" -o -name ".DS_Store"
+```
+
+### **Checkpoint Strategy**
+
+#### **Critical Checkpoints**
+1. **Before Model Downloads**: Commit repository state
+2. **After Data Collection**: Commit assets and databases
+3. **Before Notebook Development**: Commit clean environment
+4. **After Major Changes**: Immediate commit with descriptive message
+
+#### **Automated Backup Schedule**
+```bash
+# Cron job for development hours (9 AM - 6 PM weekdays)
+# 0,30 9-18 * * 1-5 cd /Users/michaeloboyle/Documents/github/ai-demos && git add -A && git commit -m "Auto-checkpoint $(date)"
+```
+
+### **Data Loss Prevention**
+
+#### **Git Repository Protection**
+- All source code, documentation, and metadata in version control
+- External drive contains only large binary models (recoverable)
+- Notebook outputs cleared before commits (regenerable)
+- Asset databases and configurations backed up in git
+
+#### **Model File Protection**
+- Model downloads with checksum verification
+- Partial download detection and resume capability
+- Multiple model sources (HuggingFace, direct download)
+- External drive redundancy options
+
+#### **Development Continuity**
+- Notebooks designed for cell-by-cell execution
+- No critical state stored in memory between sessions
+- Asset paths relative to repository root
+- Environment setup reproducible via requirements.txt
+
+### **Emergency Procedures**
+
+#### **Complete System Recovery**
+```bash
+# 1. Fresh repository clone
+git clone <repository-url> ai-demos-recovery
+cd ai-demos-recovery
+
+# 2. Environment recreation
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# 3. External drive remount
+diskutil list
+diskutil mount /dev/disk2s2  # Adjust based on system
+
+# 4. Model re-download (if corrupted)
+python scripts/setup_defect_generation.py --force-clean
+
+# 5. Notebook verification
+jupyter notebook --allow-root
+# Test each notebook execution
+```
+
+#### **Partial Recovery Options**
+- **Models Only**: Re-download to external drive (30-60 minutes)
+- **Repository Only**: Git clone + pip install (5-10 minutes)
+- **Assets Only**: Re-run data collection scripts (15-30 minutes)
+- **Full Recovery**: Complete system rebuild (60-90 minutes)
+
+### **Monitoring and Alerts**
+
+#### **System Health Checks**
+```bash
+# External drive health
+diskutil info "/Volumes/black box - Backup Data 2020" | grep "File System"
+
+# Model file integrity
+python -c "
+import os
+models_path = '/Volumes/black box - Backup Data 2020/defense-ai-models'
+if os.path.exists(models_path):
+    size = sum(os.path.getsize(os.path.join(dirpath, filename))
+               for dirpath, dirnames, filenames in os.walk(models_path)
+               for filename in filenames)
+    print(f'Models total size: {size / (1024**3):.1f} GB')
+else:
+    print('Models directory not found')
+"
+```
+
+#### **Development Session Logging**
+```bash
+# Log development sessions with timestamps
+echo "$(date): Started development session" >> logs/development.log
+echo "$(date): External drive status: $(ls /Volumes/)" >> logs/development.log
+```
+
+### **Business Impact Mitigation**
+
+#### **Demo Readiness**
+- Cached notebook outputs for offline demonstrations
+- Fallback static images if model generation unavailable
+- Pre-computed results for compliance and QC demonstrations
+- Offline-capable knowledge base for field support demo
+
+#### **Client Presentation Protection**
+- Exported HTML versions of all notebooks
+- Static image galleries for QC demonstrations
+- PDF reports for compliance analysis results
+- Backup demonstration environment on different hardware
+
+### **Cost-Benefit Analysis**
+
+#### **Investment Requirements**
+- **UPS System**: $80-120 (one-time)
+- **Time Investment**: 2-4 hours setup
+- **Maintenance**: 15 minutes weekly checks
+
+#### **Risk Mitigation Value**
+- **Development Time Protection**: 10-40 hours saved per outage
+- **Model Download Cost**: 2-4 hours re-download time avoided
+- **Client Demo Protection**: Presentation continuity assured
+- **Business Continuity**: Minimal disruption to development timeline
+
 ## Conclusion
 
 This specification outlines a comprehensive AI demo portfolio specifically designed for defense manufacturing contexts. The self-contained Jupyter notebook approach ensures:
