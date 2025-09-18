@@ -142,17 +142,33 @@ graph TD
 
 ##### Cell 1: Environment Setup
 ```python
-import re, pandas as pd, json
+import re, pandas as pd, json, os
 import ollama
 from sentence_transformers import SentenceTransformer
 from IPython.display import display, HTML
 import ipywidgets as widgets
+
+# External drive asset paths
+DEMO_ASSETS = os.environ.get('DEMO_ASSETS', '/Volumes/black box/gentex-demo-assets')
+MIL_STANDARDS_PATH = f"{DEMO_ASSETS}/mil_standards"
+SAMPLE_CONTENT_PATH = f"{DEMO_ASSETS}/sample_content"
 ```
 
 ##### Cell 2: Standards Database
 ```python
-# MIL-STD Reference Database
-mil_standards = {
+# Load MIL-STD Reference Database from external drive
+def load_mil_standards():
+    """Load MIL standards from external drive JSON files"""
+    standards = {}
+    for std_file in os.listdir(MIL_STANDARDS_PATH):
+        if std_file.endswith('.json'):
+            with open(f"{MIL_STANDARDS_PATH}/{std_file}", 'r') as f:
+                std_name = std_file.replace('.json', '')
+                standards[std_name] = json.load(f)
+    return standards
+
+# Fallback for offline demo
+mil_standards_fallback = {
     "MIL-DTL-44099": {
         "title": "Ballistic Helmet Requirements",
         "requirements": ["V50 ballistic resistance", "Weight limits", "Retention system"]
@@ -160,12 +176,14 @@ mil_standards = {
     "MIL-STD-662F": {
         "title": "V50 Ballistic Test Protocol",
         "requirements": ["Test setup", "Projectile specifications", "Velocity measurements"]
-    },
-    "MIL-STD-810G": {
-        "title": "Environmental Engineering Considerations",
-        "requirements": ["Temperature range", "Humidity resistance", "Shock/vibration"]
     }
 }
+
+# Load from external drive or use fallback
+try:
+    mil_standards = load_mil_standards()
+except:
+    mil_standards = mil_standards_fallback
 ```
 
 ##### Cell 3: Document Parser
@@ -565,9 +583,19 @@ gantt
 
 ### Development Environment
 ```bash
-# CRITICAL: Set Ollama to use external drive (internal drive insufficient)
-export OLLAMA_MODELS="/Volumes/black box/ollama-models"
-mkdir -p "/Volumes/black box/ollama-models"
+# CRITICAL: Automated asset setup for external drive
+# Run the setup script to handle environment-aware paths
+python scripts/setup_external.py
+
+# The script will:
+# 1. Detect available storage (internal vs external)
+# 2. Set OLLAMA_MODELS and DEMO_ASSETS appropriately
+# 3. Create directory structure
+# 4. Download models if needed
+
+# Manual setup (if script fails):
+export OLLAMA_MODELS="/Volumes/black box/gentex-demo-assets/models"
+export DEMO_ASSETS="/Volumes/black box/gentex-demo-assets"
 
 # Install Ollama for model management
 brew install ollama
@@ -576,9 +604,10 @@ brew install ollama
 ollama pull llama3.1:8b-instruct-q4_K_M    # 4.9GB text model
 ollama pull llava:7b-v1.6-mistral-q4_0     # 4.4GB vision model
 
-# Verify models on external drive
+# Verify external drive setup
 ollama list
-ls -la "/Volumes/black box/ollama-models"
+ls -la "$DEMO_ASSETS"
+df -h "/Volumes/black box"
 
 # Required Python packages
 pip install ollama transformers sentence-transformers opencv-python matplotlib ipywidgets pandas pillow jupyter
@@ -591,24 +620,85 @@ ollama serve
 ```
 
 ### Storage Requirements
-- **Internal Drive**: Only 19GB available (insufficient for models)
-- **External Drive**: 5.8TB available on "black box"
-- **Model Storage**: ~10GB total (4.9GB + 4.4GB + overhead)
-- **OLLAMA_MODELS**: Must point to external drive path
+- **Internal Drive**: Only 19GB available (code only, ~50MB)
+- **External Drive**: 5.8TB available on "black box" (all assets ~11GB total)
+- **Asset Breakdown**:
+  - **AI Models**: ~10GB (Llama 3.1 + LLaVA 1.6)
+  - **Helmet Images**: ~500MB (sample datasets)
+  - **MIL Standards**: ~100MB (compliance database)
+  - **Equipment KB**: ~200MB (manuals and procedures)
+  - **Sample Content**: ~50MB (cached responses)
+  - **Total External**: ~11GB (well within 5.8TB capacity)
 
-### File Structure
+### File Structure & Source Control Strategy
+
 ```
-gentex-ai-demos/
+gentex-ai-demos/                       # Git repository (internal drive)
 ├── gentex_ai_portfolio.ipynb          # Main launcher
 ├── compliance_demo.ipynb              # Compliance assistant
 ├── helmet_qc_demo.ipynb               # Quality control vision
 ├── field_support_demo.ipynb           # Field support chatbot
-├── assets/
-│   ├── helmet_samples/                # Sample images
-│   ├── mil_standards/                 # Standards database
-│   └── equipment_manuals/             # KB content
 ├── requirements.txt                   # Python dependencies
-└── README.md                          # Setup instructions
+├── README.md                          # Setup instructions
+├── .gitignore                         # Exclude large assets
+├── config/
+│   └── asset_paths.py                 # Configurable asset paths
+├── assets/                            # Small assets (Git tracked)
+│   ├── sample_data/                   # Tiny demo samples (<1MB each)
+│   ├── schemas/                       # JSON schemas and templates
+│   └── fallback_content/              # Minimal offline fallbacks
+└── scripts/
+    ├── download_models.py             # Model download automation
+    ├── generate_assets.py             # Asset generation scripts
+    └── setup_external.py              # External drive setup
+
+/Volumes/black box/gentex-demo-assets/  # Large assets (NOT in Git)
+├── models/                            # Downloaded via script (~10GB)
+├── helmet_samples/                    # Generated via script (~500MB)
+├── mil_standards/                     # Downloaded/generated (~100MB)
+├── equipment_manuals/                 # Generated content (~200MB)
+└── sample_content/                    # Cached responses (~50MB)
+```
+
+### Source Control Impact Analysis
+
+#### **Git Repository (Tracked):**
+- **Size**: ~50-100MB (notebooks + small samples + scripts)
+- **Content**: Source code, schemas, generation scripts, tiny samples
+- **Portable**: Works across different development environments
+- **Collaborative**: Full team access and version history
+
+#### **External Assets (Not Tracked):**
+- **Size**: ~11GB (models, images, databases)
+- **Content**: Generated/downloaded content via automation scripts
+- **Local**: Machine-specific, regenerated as needed
+- **Excluded**: .gitignore prevents accidental commits
+
+#### **Asset Management Strategy:**
+```python
+# config/asset_paths.py - Environment-aware path configuration
+import os
+import platform
+
+def get_asset_base_path():
+    """Get asset path based on environment"""
+    if platform.system() == "Darwin":  # macOS
+        # Check for external drive first
+        if os.path.exists("/Volumes/black box"):
+            return "/Volumes/black box/gentex-demo-assets"
+
+    # Fallback to local directory for other systems
+    return os.path.join(os.getcwd(), "local_assets")
+
+def setup_asset_directories():
+    """Create asset directory structure"""
+    base_path = get_asset_base_path()
+    directories = [
+        "models", "helmet_samples", "mil_standards",
+        "equipment_manuals", "sample_content"
+    ]
+    for directory in directories:
+        os.makedirs(os.path.join(base_path, directory), exist_ok=True)
 ```
 
 ## Success Metrics
