@@ -565,12 +565,20 @@ gantt
 
 ### Development Environment
 ```bash
+# CRITICAL: Set Ollama to use external drive (internal drive insufficient)
+export OLLAMA_MODELS="/Volumes/black box/ollama-models"
+mkdir -p "/Volumes/black box/ollama-models"
+
 # Install Ollama for model management
 brew install ollama
 
-# Download required models
+# Download required models to external drive (total ~10GB)
 ollama pull llama3.1:8b-instruct-q4_K_M    # 4.9GB text model
 ollama pull llava:7b-v1.6-mistral-q4_0     # 4.4GB vision model
+
+# Verify models on external drive
+ollama list
+ls -la "/Volumes/black box/ollama-models"
 
 # Required Python packages
 pip install ollama transformers sentence-transformers opencv-python matplotlib ipywidgets pandas pillow jupyter
@@ -578,9 +586,15 @@ pip install ollama transformers sentence-transformers opencv-python matplotlib i
 # Jupyter Extensions
 jupyter nbextension enable --py widgetsnbextension
 
-# Start Ollama service
+# Start Ollama service (will use external drive models)
 ollama serve
 ```
+
+### Storage Requirements
+- **Internal Drive**: Only 19GB available (insufficient for models)
+- **External Drive**: 5.8TB available on "black box"
+- **Model Storage**: ~10GB total (4.9GB + 4.4GB + overhead)
+- **OLLAMA_MODELS**: Must point to external drive path
 
 ### File Structure
 ```
@@ -646,11 +660,14 @@ flowchart TD
 
 ### Technical Risks
 - **Model Loading**: Sequential model management for 16GB RAM constraints
-- **Performance**: Optimized inference with quantized models
+- **Storage Limitations**: Internal drive insufficient - external drive required
+- **External Drive Dependency**: Models must be accessible on "black box" drive
+- **Performance**: Optimized inference with quantized models on external storage
 - **Dependencies**: Local model availability and Ollama service reliability
 - **Compatibility**: Tested on M2 Pro with macOS Sonoma
 
 ### Demo Risks
+- **External Drive Access**: Ensure "black box" drive mounted before demo start
 - **Model Performance**: Pre-warmed models and cached responses for smooth demos
 - **Time Constraints**: Modular demos for flexible presentation
 - **Technical Issues**: Backup static screenshots and fallback responses
