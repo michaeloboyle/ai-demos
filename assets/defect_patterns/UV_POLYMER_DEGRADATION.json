@@ -1,0 +1,46 @@
+{
+  "id": "UV_POLYMER_DEGRADATION",
+  "title": "UV Radiation Polymer Chain Scission",
+  "source": "Material Science Simulation",
+  "description": "Long-term UV exposure causing molecular chain breakdown",
+  "defect_type": "material_degradation",
+  "degradation_scenario": {
+    "title": "UV Radiation Polymer Chain Scission",
+    "description": "Long-term UV exposure causing molecular chain breakdown",
+    "degradation_type": "photochemical",
+    "exposure_duration_hours": 2000,
+    "wavelength_nm": [
+      280,
+      320
+    ],
+    "affected_materials": [
+      "polycarbonate_shell",
+      "aramid_fibers"
+    ],
+    "degradation_pattern": "surface_chalking_embrittlement"
+  },
+  "degradation_model": {
+    "degradation_mechanism": "chain_scission",
+    "kinetics": {
+      "rate_constant": 2.3e-06,
+      "activation_energy_kj_mol": 120,
+      "quantum_efficiency": 0.15
+    },
+    "property_changes": {
+      "tensile_strength_retention_percent": 70,
+      "impact_strength_retention_percent": 60,
+      "surface_roughness_increase_ra": 2.0
+    },
+    "visual_indicators": {
+      "color_change_delta_e": 8.0,
+      "surface_chalking": "visible",
+      "gloss_reduction_percent": 36.0
+    }
+  },
+  "detectability": "medium",
+  "criticality": "major",
+  "inspection_method": "visual_spectroscopic",
+  "generated_date": "2025-09-18",
+  "physics_based": true,
+  "time_dependent": true
+}

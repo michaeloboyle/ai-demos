@@ -1,0 +1,37 @@
+{
+  "id": "BLUNT_TRAUMA_IMPACT",
+  "title": "Blunt Force Trauma - Drop Test Simulation",
+  "source": "Physics-Based Simulation",
+  "description": "Simulated drop impact from 2m height onto concrete",
+  "defect_type": "impact_damage",
+  "impact_scenario": {
+    "title": "Blunt Force Trauma - Drop Test Simulation",
+    "description": "Simulated drop impact from 2m height onto concrete",
+    "impact_type": "blunt_force",
+    "impactor": "concrete_surface",
+    "impact_energy_j": 45,
+    "contact_area": 1250,
+    "damage_pattern": "compression_shear",
+    "crack_propagation": "stress_concentration"
+  },
+  "damage_geometry": {
+    "primary_damage": {
+      "shape": "elliptical",
+      "major_axis_mm": 43.8836508441576,
+      "minor_axis_mm": 35.904805236128944,
+      "depth_mm": 1.5,
+      "edge_condition": "compression_shear"
+    },
+    "matrix_cracking": {
+      "pattern": "concentric",
+      "crack_density": "high",
+      "orientation": "perpendicular_to_load"
+    }
+  },
+  "detectability": "high",
+  "criticality": "critical",
+  "inspection_method": "visual_tactile",
+  "generated_date": "2025-09-18",
+  "physics_based": true,
+  "validation_status": "synthetic_verified"
+}

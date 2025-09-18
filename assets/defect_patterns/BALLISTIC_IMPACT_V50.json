@@ -1,0 +1,50 @@
+{
+  "id": "BALLISTIC_IMPACT_V50",
+  "title": "Ballistic Impact - V50 Test Pattern",
+  "source": "Physics-Based Simulation",
+  "description": "Synthetic ballistic impact pattern at V50 velocity threshold",
+  "defect_type": "impact_damage",
+  "impact_scenario": {
+    "title": "Ballistic Impact - V50 Test Pattern",
+    "description": "Synthetic ballistic impact pattern at V50 velocity threshold",
+    "impact_type": "ballistic",
+    "projectile": "17_grain_FSP",
+    "velocity_mps": 650,
+    "impact_location": {
+      "x": 0.45,
+      "y": 0.35
+    },
+    "damage_radius": 15,
+    "stress_pattern": "radial_symmetric",
+    "material_response": "aramid_fiber_delamination"
+  },
+  "damage_geometry": {
+    "primary_damage": {
+      "shape": "circular",
+      "diameter_mm": 30,
+      "depth_mm": 2.3,
+      "edge_condition": "fiber_pullout"
+    },
+    "secondary_damage": {
+      "crack_pattern": "radial_symmetric",
+      "crack_count": 6,
+      "max_crack_length_mm": 37.5,
+      "crack_width_microns": [
+        50,
+        150
+      ]
+    },
+    "stress_field": {
+      "type": "von_mises",
+      "peak_stress_mpa": 450,
+      "decay_function": "exponential",
+      "influence_radius_mm": 45
+    }
+  },
+  "detectability": "high",
+  "criticality": "critical",
+  "inspection_method": "visual_tactile",
+  "generated_date": "2025-09-18",
+  "physics_based": true,
+  "validation_status": "synthetic_verified"
+}

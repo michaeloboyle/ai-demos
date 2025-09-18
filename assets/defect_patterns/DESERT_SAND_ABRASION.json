@@ -1,0 +1,38 @@
+{
+  "id": "DESERT_SAND_ABRASION",
+  "title": "Desert Sand Abrasion Damage",
+  "source": "Environmental Exposure Simulation",
+  "description": "Silica particle abrasion from desert operations",
+  "defect_type": "environmental_damage",
+  "environmental_scenario": {
+    "title": "Desert Sand Abrasion Damage",
+    "description": "Silica particle abrasion from desert operations",
+    "environment_type": "arid_desert",
+    "particle_size_microns": [
+      50,
+      200
+    ],
+    "wind_velocity_mps": 15,
+    "exposure_hours": 480,
+    "abrasion_pattern": "windward_surface_erosion"
+  },
+  "damage_model": {
+    "abrasion_mechanism": "particle_impact_erosion",
+    "erosion_rate": {
+      "mass_loss_g_h": 0.003,
+      "surface_recession_microns_h": 0.12,
+      "roughness_increase_ra_h": 0.008
+    },
+    "particle_effects": {
+      "embedded_particles": true,
+      "surface_texture_change": "matte_finish",
+      "optical_property_change": "reduced_reflectance"
+    }
+  },
+  "detectability": "medium_to_high",
+  "criticality": "variable",
+  "inspection_method": "visual_chemical",
+  "generated_date": "2025-09-18",
+  "environment_specific": true,
+  "field_relevant": true
+}

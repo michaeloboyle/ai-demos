@@ -1,0 +1,34 @@
+{
+  "id": "PADDING_COMPRESSION_SET",
+  "title": "Interior Padding Compression Set",
+  "source": "Usage Simulation Model",
+  "description": "Permanent deformation of interior foam padding",
+  "defect_type": "wear_degradation",
+  "wear_scenario": {
+    "title": "Interior Padding Compression Set",
+    "description": "Permanent deformation of interior foam padding",
+    "wear_type": "viscoelastic_deformation",
+    "compression_cycles": 500,
+    "max_compression_percent": 60,
+    "recovery_time_hours": 24,
+    "permanent_set_percent": 15
+  },
+  "wear_progression": {
+    "deformation_mechanism": "viscoelastic_creep",
+    "time_dependent_response": {
+      "instantaneous_compression_percent": 60,
+      "delayed_recovery_hours": 24,
+      "permanent_set_percent": 6.0
+    },
+    "material_property_changes": {
+      "elastic_modulus_reduction_percent": 10.0,
+      "energy_absorption_reduction_percent": 16.0
+    }
+  },
+  "detectability": "high",
+  "criticality": "minor",
+  "inspection_method": "visual_dimensional",
+  "generated_date": "2025-09-18",
+  "usage_based": true,
+  "progressive": true
+}

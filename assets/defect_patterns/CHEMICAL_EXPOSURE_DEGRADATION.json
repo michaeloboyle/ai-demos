@@ -1,0 +1,42 @@
+{
+  "id": "CHEMICAL_EXPOSURE_DEGRADATION",
+  "title": "Chemical Agent Degradation Pattern",
+  "source": "Material Science Simulation",
+  "description": "Synthetic exposure to common field chemicals",
+  "defect_type": "material_degradation",
+  "degradation_scenario": {
+    "title": "Chemical Agent Degradation Pattern",
+    "description": "Synthetic exposure to common field chemicals",
+    "degradation_type": "chemical",
+    "exposure_agents": [
+      "diesel_fuel",
+      "hydraulic_fluid",
+      "cleaning_solvents"
+    ],
+    "exposure_duration_hours": 168,
+    "degradation_effects": [
+      "plasticizer_migration",
+      "surface_etching",
+      "color_change"
+    ]
+  },
+  "degradation_model": {
+    "degradation_mechanism": "polymer_swelling_extraction",
+    "chemical_effects": {
+      "mass_change_percent": -2.1,
+      "dimensional_change_percent": 0.8,
+      "modulus_change_percent": -15
+    },
+    "surface_effects": {
+      "etching_depth_microns": 16.8,
+      "surface_energy_change": "decreased",
+      "wettability_change": "increased_hydrophobic"
+    }
+  },
+  "detectability": "medium",
+  "criticality": "major",
+  "inspection_method": "visual_spectroscopic",
+  "generated_date": "2025-09-18",
+  "physics_based": true,
+  "time_dependent": true
+}

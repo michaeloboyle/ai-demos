@@ -1,0 +1,35 @@
+{
+  "id": "FIBER_MISALIGNMENT_PATTERN",
+  "title": "Aramid Fiber Misalignment Defect",
+  "source": "Manufacturing Process Simulation",
+  "description": "Fiber bundle misalignment during layup process",
+  "defect_type": "manufacturing_defect",
+  "manufacturing_scenario": {
+    "title": "Aramid Fiber Misalignment Defect",
+    "description": "Fiber bundle misalignment during layup process",
+    "defect_type": "fiber_orientation",
+    "target_angle_degrees": 0,
+    "actual_angle_degrees": 15,
+    "affected_area_percent": 12,
+    "strength_reduction_percent": 25
+  },
+  "defect_characteristics": {
+    "orientation_statistics": {
+      "target_angle_degrees": 0,
+      "actual_angle_degrees": 15,
+      "standard_deviation_degrees": 4.5,
+      "distribution_type": "normal"
+    },
+    "mechanical_impact": {
+      "in_plane_strength_reduction_percent": 2.7777777777777777,
+      "shear_strength_change_percent": 24.999999999999996,
+      "stiffness_matrix_rotation": true
+    }
+  },
+  "detectability": "medium",
+  "criticality": "minor_to_major",
+  "inspection_method": "ndt_ultrasonic",
+  "generated_date": "2025-09-18",
+  "process_related": true,
+  "quality_control_stage": "post_molding"
+}

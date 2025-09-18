@@ -1,0 +1,114 @@
+{
+  "source": "NTSB, FAA, Public Equipment Databases",
+  "count": 10,
+  "equipment": {
+    "FAA_HELICOPTER_SAFETY": {
+      "id": "FAA_HELICOPTER_SAFETY",
+      "title": "FAA Helicopter Safety Equipment Requirements",
+      "source": "FAA Aircraft Registry",
+      "category": "helicopter",
+      "description": "Safety equipment requirements for helicopter operations",
+      "url": "https://registry.faa.gov",
+      "collection_date": "2025-09-18",
+      "official": true
+    },
+    "FAA_MILITARY_AIRCRAFT": {
+      "id": "FAA_MILITARY_AIRCRAFT",
+      "title": "Military Aircraft Registration Requirements",
+      "source": "FAA Aircraft Registry",
+      "category": "military",
+      "description": "Registration and safety requirements for military aircraft",
+      "url": "https://registry.faa.gov",
+      "collection_date": "2025-09-18",
+      "official": true
+    },
+    "FAA_EXPERIMENTAL_SAFETY": {
+      "id": "FAA_EXPERIMENTAL_SAFETY",
+      "title": "Experimental Aircraft Safety Requirements",
+      "source": "FAA Aircraft Registry",
+      "category": "experimental",
+      "description": "Safety equipment and operational requirements for experimental aircraft",
+      "url": "https://registry.faa.gov",
+      "collection_date": "2025-09-18",
+      "official": true
+    },
+    "WIKI_AVIATION_SAFETY": {
+      "id": "WIKI_AVIATION_SAFETY",
+      "title": "Aviation safety",
+      "source": "Wikipedia Aviation Safety",
+      "url": "https://en.wikipedia.org/wiki/Aviation_safety",
+      "summary": "Aviation safety is the study and practice of managing risks in aviation. This includes preventing aviation accidents and incidents through research, training aviation personnel, protecting passengers and the general public, and designing safer aircraft and aviation infrastructure.\nThe aviation indus...",
+      "description": "State in which risks associated with aviation are at an acceptable level",
+      "collection_date": "2025-09-18",
+      "official": false,
+      "public_domain": true
+    },
+    "WIKI_FLIGHT_HELMET": {
+      "id": "WIKI_FLIGHT_HELMET",
+      "title": "Flight helmet",
+      "source": "Wikipedia Aviation Safety",
+      "url": "https://en.wikipedia.org/wiki/Flight_helmet",
+      "summary": "A flight helmet, sometimes referred to as a \"skull dome\", \"bone dome\" or \"foam dome\", is a special type of helmet primarily worn by military aircrew.",
+      "description": "Headgear worn by pilots and flight crew",
+      "collection_date": "2025-09-18",
+      "official": false,
+      "public_domain": true
+    },
+    "WIKI_MILITARY_AVIATION": {
+      "id": "WIKI_MILITARY_AVIATION",
+      "title": "Military aviation",
+      "source": "Wikipedia Aviation Safety",
+      "url": "https://en.wikipedia.org/wiki/Military_aviation",
+      "summary": "Military aviation is the design, development and use of military aircraft and other flying machines for the purposes of conducting or enabling aerial warfare, including national airlift capacity to provide logistical supply to forces stationed in a war theater or along a front. Airpower includes the...",
+      "description": "Use of aircraft by armed forces in combat or other military capacity",
+      "collection_date": "2025-09-18",
+      "official": false,
+      "public_domain": true
+    },
+    "PATENT_BALLISTIC_HELMET": {
+      "id": "PATENT_BALLISTIC_HELMET",
+      "title": "Patent Search: ballistic helmet",
+      "source": "Google Patents Database",
+      "search_term": "ballistic helmet",
+      "description": "Patent search results for ballistic helmet related technologies",
+      "url": "https://patents.google.com/?q=ballistic+helmet",
+      "collection_date": "2025-09-18",
+      "official": false,
+      "public_domain": true
+    },
+    "PATENT_PROTECTIVE_HEADGEAR": {
+      "id": "PATENT_PROTECTIVE_HEADGEAR",
+      "title": "Patent Search: protective headgear",
+      "source": "Google Patents Database",
+      "search_term": "protective headgear",
+      "description": "Patent search results for protective headgear related technologies",
+      "url": "https://patents.google.com/?q=protective+headgear",
+      "collection_date": "2025-09-18",
+      "official": false,
+      "public_domain": true
+    },
+    "PATENT_AVIATION_HELMET": {
+      "id": "PATENT_AVIATION_HELMET",
+      "title": "Patent Search: aviation helmet",
+      "source": "Google Patents Database",
+      "search_term": "aviation helmet",
+      "description": "Patent search results for aviation helmet related technologies",
+      "url": "https://patents.google.com/?q=aviation+helmet",
+      "collection_date": "2025-09-18",
+      "official": false,
+      "public_domain": true
+    },
+    "PATENT_MILITARY_HELMET": {
+      "id": "PATENT_MILITARY_HELMET",
+      "title": "Patent Search: military helmet",
+      "source": "Google Patents Database",
+      "search_term": "military helmet",
+      "description": "Patent search results for military helmet related technologies",
+      "url": "https://patents.google.com/?q=military+helmet",
+      "collection_date": "2025-09-18",
+      "official": false,
+      "public_domain": true
+    }
+  },
+  "verification": "public_official_sources"
+}

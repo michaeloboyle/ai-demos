@@ -1,0 +1,42 @@
+{
+  "id": "CHIN_STRAP_WEAR_PATTERN",
+  "title": "Chin Strap Contact Wear",
+  "source": "Usage Simulation Model",
+  "description": "Localized wear from chin strap friction over 200 use cycles",
+  "defect_type": "wear_degradation",
+  "wear_scenario": {
+    "title": "Chin Strap Contact Wear",
+    "description": "Localized wear from chin strap friction over 200 use cycles",
+    "wear_type": "abrasive_contact",
+    "contact_location": "chin_strap_attachment",
+    "use_cycles": 200,
+    "contact_pressure_kpa": 15,
+    "wear_depth_microns": 45,
+    "wear_area_shape": "elliptical"
+  },
+  "wear_progression": {
+    "wear_mechanism": "abrasive_adhesive",
+    "wear_equation": "archard",
+    "parameters": {
+      "wear_coefficient": 1.2e-06,
+      "hardness_mpa": 180,
+      "contact_pressure_mpa": 0.015
+    },
+    "progression_model": {
+      "wear_volume_mm3": 3.0,
+      "wear_depth_microns": 45.0,
+      "surface_roughness_ra": 2.8
+    },
+    "geometry_evolution": {
+      "contact_area_increase_percent": 24.0,
+      "stress_redistribution": true,
+      "shape_factor_change": -0.05
+    }
+  },
+  "detectability": "high",
+  "criticality": "minor",
+  "inspection_method": "visual_dimensional",
+  "generated_date": "2025-09-18",
+  "usage_based": true,
+  "progressive": true
+}

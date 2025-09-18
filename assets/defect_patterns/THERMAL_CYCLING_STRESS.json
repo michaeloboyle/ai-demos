@@ -1,0 +1,38 @@
+{
+  "id": "THERMAL_CYCLING_STRESS",
+  "title": "Thermal Cycling Induced Microcracking",
+  "source": "Material Science Simulation",
+  "description": "Temperature cycling causing differential expansion stress",
+  "defect_type": "material_degradation",
+  "degradation_scenario": {
+    "title": "Thermal Cycling Induced Microcracking",
+    "description": "Temperature cycling causing differential expansion stress",
+    "degradation_type": "thermal_mechanical",
+    "temperature_range_c": [
+      -40,
+      60
+    ],
+    "cycle_count": 500,
+    "stress_concentration": "material_interfaces",
+    "crack_initiation": "thermal_expansion_mismatch"
+  },
+  "degradation_model": {
+    "degradation_mechanism": "fatigue_creep",
+    "damage_accumulation": {
+      "damage_per_cycle": 0.002,
+      "cumulative_damage": 1.0,
+      "critical_damage": 0.8
+    },
+    "microstructural_changes": {
+      "microcrack_density_per_mm2": 25.0,
+      "crack_length_distribution": "weibull",
+      "interface_debonding_percent": 25
+    }
+  },
+  "detectability": "medium",
+  "criticality": "major",
+  "inspection_method": "visual_spectroscopic",
+  "generated_date": "2025-09-18",
+  "physics_based": true,
+  "time_dependent": true
+}

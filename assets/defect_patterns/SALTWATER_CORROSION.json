@@ -1,0 +1,38 @@
+{
+  "id": "SALTWATER_CORROSION",
+  "title": "Saltwater Corrosion Pattern",
+  "source": "Environmental Exposure Simulation",
+  "description": "Marine environment metal component corrosion",
+  "defect_type": "environmental_damage",
+  "environmental_scenario": {
+    "title": "Saltwater Corrosion Pattern",
+    "description": "Marine environment metal component corrosion",
+    "environment_type": "marine",
+    "exposure_duration_days": 90,
+    "salt_concentration_ppm": 35000,
+    "affected_components": [
+      "mounting_hardware",
+      "retention_buckles"
+    ],
+    "corrosion_type": "pitting_crevice"
+  },
+  "damage_model": {
+    "corrosion_mechanism": "electrochemical",
+    "corrosion_rate_mm_year": 0.15,
+    "pit_formation": {
+      "pit_density_per_cm2": 1.8,
+      "average_pit_depth_microns": 108.0,
+      "pit_diameter_microns": 72.0
+    },
+    "material_effects": {
+      "mass_loss_percent": 0.09,
+      "strength_retention_percent": 95.5
+    }
+  },
+  "detectability": "medium_to_high",
+  "criticality": "variable",
+  "inspection_method": "visual_chemical",
+  "generated_date": "2025-09-18",
+  "environment_specific": true,
+  "field_relevant": true
+}

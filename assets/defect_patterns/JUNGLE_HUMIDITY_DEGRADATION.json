@@ -1,0 +1,39 @@
+{
+  "id": "JUNGLE_HUMIDITY_DEGRADATION",
+  "title": "High Humidity Degradation Pattern",
+  "source": "Environmental Exposure Simulation",
+  "description": "Tropical environment moisture degradation effects",
+  "defect_type": "environmental_damage",
+  "environmental_scenario": {
+    "title": "High Humidity Degradation Pattern",
+    "description": "Tropical environment moisture degradation effects",
+    "environment_type": "tropical_humid",
+    "relative_humidity_percent": 95,
+    "temperature_c": 35,
+    "fungal_growth_risk": "high",
+    "material_effects": [
+      "hydrolysis",
+      "dimensional_swelling",
+      "mold_growth"
+    ]
+  },
+  "damage_model": {
+    "degradation_mechanism": "hydrolytic_biological",
+    "moisture_effects": {
+      "moisture_uptake_percent": 1.8,
+      "dimensional_swelling_percent": 0.3,
+      "tg_depression_c": -12
+    },
+    "biological_effects": {
+      "fungal_growth_probability": 0.85,
+      "growth_rate_mm_day": 0.15,
+      "biodeterioration_severity": "moderate"
+    }
+  },
+  "detectability": "medium_to_high",
+  "criticality": "variable",
+  "inspection_method": "visual_chemical",
+  "generated_date": "2025-09-18",
+  "environment_specific": true,
+  "field_relevant": true
+}

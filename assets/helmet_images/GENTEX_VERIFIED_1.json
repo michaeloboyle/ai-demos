@@ -1,0 +1,17 @@
+{
+  "id": "GENTEX_VERIFIED_1",
+  "title": "Gentex Helmet Product Image 1",
+  "source": "Gentex Corporation Verified",
+  "description": "Verified product image from Gentex catalog - suitable for QC analysis",
+  "image_url": "https://cdn11.bigcommerce.com/s-tdvizl1wrj/stencil/ac8861d0-0bec-013e-9734-4e04d73a3868/e/6579fe20-4a29-013e-ca74-52b5c4b168da/img/menu/helmet-systems/product-image.jpg",
+  "catalog_page": "https://shop.gentexcorp.com/helmet-systems/ballistic/",
+  "verification_status": "confirmed",
+  "image_type": "product_photography",
+  "qc_suitable": true,
+  "license": "Commercial Product Catalog",
+  "collection_date": "2025-09-18",
+  "official": true,
+  "manufacturer": "Gentex Corporation",
+  "downloadable": true,
+  "verified": true
+}

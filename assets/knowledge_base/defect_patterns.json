@@ -1,0 +1,622 @@
+{
+  "source": "Physics-Based Simulation",
+  "count": 15,
+  "patterns": {
+    "BALLISTIC_IMPACT_V50": {
+      "id": "BALLISTIC_IMPACT_V50",
+      "title": "Ballistic Impact - V50 Test Pattern",
+      "source": "Physics-Based Simulation",
+      "description": "Synthetic ballistic impact pattern at V50 velocity threshold",
+      "defect_type": "impact_damage",
+      "impact_scenario": {
+        "title": "Ballistic Impact - V50 Test Pattern",
+        "description": "Synthetic ballistic impact pattern at V50 velocity threshold",
+        "impact_type": "ballistic",
+        "projectile": "17_grain_FSP",
+        "velocity_mps": 650,
+        "impact_location": {
+          "x": 0.45,
+          "y": 0.35
+        },
+        "damage_radius": 15,
+        "stress_pattern": "radial_symmetric",
+        "material_response": "aramid_fiber_delamination"
+      },
+      "damage_geometry": {
+        "primary_damage": {
+          "shape": "circular",
+          "diameter_mm": 30,
+          "depth_mm": 2.3,
+          "edge_condition": "fiber_pullout"
+        },
+        "secondary_damage": {
+          "crack_pattern": "radial_symmetric",
+          "crack_count": 6,
+          "max_crack_length_mm": 37.5,
+          "crack_width_microns": [
+            50,
+            150
+          ]
+        },
+        "stress_field": {
+          "type": "von_mises",
+          "peak_stress_mpa": 450,
+          "decay_function": "exponential",
+          "influence_radius_mm": 45
+        }
+      },
+      "detectability": "high",
+      "criticality": "critical",
+      "inspection_method": "visual_tactile",
+      "generated_date": "2025-09-18",
+      "physics_based": true,
+      "validation_status": "synthetic_verified"
+    },
+    "BLUNT_TRAUMA_IMPACT": {
+      "id": "BLUNT_TRAUMA_IMPACT",
+      "title": "Blunt Force Trauma - Drop Test Simulation",
+      "source": "Physics-Based Simulation",
+      "description": "Simulated drop impact from 2m height onto concrete",
+      "defect_type": "impact_damage",
+      "impact_scenario": {
+        "title": "Blunt Force Trauma - Drop Test Simulation",
+        "description": "Simulated drop impact from 2m height onto concrete",
+        "impact_type": "blunt_force",
+        "impactor": "concrete_surface",
+        "impact_energy_j": 45,
+        "contact_area": 1250,
+        "damage_pattern": "compression_shear",
+        "crack_propagation": "stress_concentration"
+      },
+      "damage_geometry": {
+        "primary_damage": {
+          "shape": "elliptical",
+          "major_axis_mm": 43.8836508441576,
+          "minor_axis_mm": 35.904805236128944,
+          "depth_mm": 1.5,
+          "edge_condition": "compression_shear"
+        },
+        "matrix_cracking": {
+          "pattern": "concentric",
+          "crack_density": "high",
+          "orientation": "perpendicular_to_load"
+        }
+      },
+      "detectability": "high",
+      "criticality": "critical",
+      "inspection_method": "visual_tactile",
+      "generated_date": "2025-09-18",
+      "physics_based": true,
+      "validation_status": "synthetic_verified"
+    },
+    "FRAGMENT_IMPACT_PATTERN": {
+      "id": "FRAGMENT_IMPACT_PATTERN",
+      "title": "Fragment Impact - Multi-Point Damage",
+      "source": "Physics-Based Simulation",
+      "description": "Multiple fragment impacts from explosive proximity",
+      "defect_type": "impact_damage",
+      "impact_scenario": {
+        "title": "Fragment Impact - Multi-Point Damage",
+        "description": "Multiple fragment impacts from explosive proximity",
+        "impact_type": "fragmentation",
+        "fragment_count": 7,
+        "fragment_size_range": [
+          2,
+          8
+        ],
+        "impact_angles": [
+          15,
+          30,
+          45,
+          60,
+          75
+        ],
+        "damage_distribution": "clustered_random"
+      },
+      "damage_geometry": {
+        "primary_damage": {
+          "shape": "multiple_circular",
+          "fragment_count": 7,
+          "diameter_range_mm": [
+            3,
+            12
+          ],
+          "pattern": "clustered_random",
+          "individual_depth_mm": [
+            0.5,
+            2.0
+          ]
+        },
+        "interaction_effects": {
+          "stress_overlap": true,
+          "crack_linking": "possible",
+          "combined_effect": "additive"
+        }
+      },
+      "detectability": "high",
+      "criticality": "critical",
+      "inspection_method": "visual_tactile",
+      "generated_date": "2025-09-18",
+      "physics_based": true,
+      "validation_status": "synthetic_verified"
+    },
+    "UV_POLYMER_DEGRADATION": {
+      "id": "UV_POLYMER_DEGRADATION",
+      "title": "UV Radiation Polymer Chain Scission",
+      "source": "Material Science Simulation",
+      "description": "Long-term UV exposure causing molecular chain breakdown",
+      "defect_type": "material_degradation",
+      "degradation_scenario": {
+        "title": "UV Radiation Polymer Chain Scission",
+        "description": "Long-term UV exposure causing molecular chain breakdown",
+        "degradation_type": "photochemical",
+        "exposure_duration_hours": 2000,
+        "wavelength_nm": [
+          280,
+          320
+        ],
+        "affected_materials": [
+          "polycarbonate_shell",
+          "aramid_fibers"
+        ],
+        "degradation_pattern": "surface_chalking_embrittlement"
+      },
+      "degradation_model": {
+        "degradation_mechanism": "chain_scission",
+        "kinetics": {
+          "rate_constant": 2.3e-06,
+          "activation_energy_kj_mol": 120,
+          "quantum_efficiency": 0.15
+        },
+        "property_changes": {
+          "tensile_strength_retention_percent": 70,
+          "impact_strength_retention_percent": 60,
+          "surface_roughness_increase_ra": 2.0
+        },
+        "visual_indicators": {
+          "color_change_delta_e": 8.0,
+          "surface_chalking": "visible",
+          "gloss_reduction_percent": 36.0
+        }
+      },
+      "detectability": "medium",
+      "criticality": "major",
+      "inspection_method": "visual_spectroscopic",
+      "generated_date": "2025-09-18",
+      "physics_based": true,
+      "time_dependent": true
+    },
+    "THERMAL_CYCLING_STRESS": {
+      "id": "THERMAL_CYCLING_STRESS",
+      "title": "Thermal Cycling Induced Microcracking",
+      "source": "Material Science Simulation",
+      "description": "Temperature cycling causing differential expansion stress",
+      "defect_type": "material_degradation",
+      "degradation_scenario": {
+        "title": "Thermal Cycling Induced Microcracking",
+        "description": "Temperature cycling causing differential expansion stress",
+        "degradation_type": "thermal_mechanical",
+        "temperature_range_c": [
+          -40,
+          60
+        ],
+        "cycle_count": 500,
+        "stress_concentration": "material_interfaces",
+        "crack_initiation": "thermal_expansion_mismatch"
+      },
+      "degradation_model": {
+        "degradation_mechanism": "fatigue_creep",
+        "damage_accumulation": {
+          "damage_per_cycle": 0.002,
+          "cumulative_damage": 1.0,
+          "critical_damage": 0.8
+        },
+        "microstructural_changes": {
+          "microcrack_density_per_mm2": 25.0,
+          "crack_length_distribution": "weibull",
+          "interface_debonding_percent": 25
+        }
+      },
+      "detectability": "medium",
+      "criticality": "major",
+      "inspection_method": "visual_spectroscopic",
+      "generated_date": "2025-09-18",
+      "physics_based": true,
+      "time_dependent": true
+    },
+    "CHEMICAL_EXPOSURE_DEGRADATION": {
+      "id": "CHEMICAL_EXPOSURE_DEGRADATION",
+      "title": "Chemical Agent Degradation Pattern",
+      "source": "Material Science Simulation",
+      "description": "Synthetic exposure to common field chemicals",
+      "defect_type": "material_degradation",
+      "degradation_scenario": {
+        "title": "Chemical Agent Degradation Pattern",
+        "description": "Synthetic exposure to common field chemicals",
+        "degradation_type": "chemical",
+        "exposure_agents": [
+          "diesel_fuel",
+          "hydraulic_fluid",
+          "cleaning_solvents"
+        ],
+        "exposure_duration_hours": 168,
+        "degradation_effects": [
+          "plasticizer_migration",
+          "surface_etching",
+          "color_change"
+        ]
+      },
+      "degradation_model": {
+        "degradation_mechanism": "polymer_swelling_extraction",
+        "chemical_effects": {
+          "mass_change_percent": -2.1,
+          "dimensional_change_percent": 0.8,
+          "modulus_change_percent": -15
+        },
+        "surface_effects": {
+          "etching_depth_microns": 16.8,
+          "surface_energy_change": "decreased",
+          "wettability_change": "increased_hydrophobic"
+        }
+      },
+      "detectability": "medium",
+      "criticality": "major",
+      "inspection_method": "visual_spectroscopic",
+      "generated_date": "2025-09-18",
+      "physics_based": true,
+      "time_dependent": true
+    },
+    "RESIN_VOID_FORMATION": {
+      "id": "RESIN_VOID_FORMATION",
+      "title": "Resin Matrix Void Formation",
+      "source": "Manufacturing Process Simulation",
+      "description": "Air entrapment during resin transfer molding",
+      "defect_type": "manufacturing_defect",
+      "manufacturing_scenario": {
+        "title": "Resin Matrix Void Formation",
+        "description": "Air entrapment during resin transfer molding",
+        "defect_type": "void_formation",
+        "process_stage": "resin_transfer_molding",
+        "void_size_distribution": "lognormal",
+        "void_density_per_cm2": 2.3,
+        "formation_mechanism": "air_entrapment_degassing"
+      },
+      "defect_characteristics": {
+        "void_statistics": {
+          "number_density_per_cm2": 2.3,
+          "size_distribution": {
+            "type": "lognormal",
+            "mean_diameter_microns": 150,
+            "standard_deviation": 0.6
+          },
+          "shape_factor": 0.85,
+          "connectivity": "isolated"
+        },
+        "formation_physics": {
+          "nucleation_sites": "fiber_matrix_interface",
+          "growth_mechanism": "diffusion_limited",
+          "stabilizing_factors": [
+            "surface_tension",
+            "viscosity"
+          ]
+        },
+        "property_impact": {
+          "strength_reduction_percent": 7.359999999999999,
+          "modulus_reduction_percent": 4.14,
+          "fatigue_life_reduction_percent": 12.649999999999999
+        }
+      },
+      "detectability": "medium",
+      "criticality": "minor_to_major",
+      "inspection_method": "ndt_ultrasonic",
+      "generated_date": "2025-09-18",
+      "process_related": true,
+      "quality_control_stage": "post_molding"
+    },
+    "FIBER_MISALIGNMENT_PATTERN": {
+      "id": "FIBER_MISALIGNMENT_PATTERN",
+      "title": "Aramid Fiber Misalignment Defect",
+      "source": "Manufacturing Process Simulation",
+      "description": "Fiber bundle misalignment during layup process",
+      "defect_type": "manufacturing_defect",
+      "manufacturing_scenario": {
+        "title": "Aramid Fiber Misalignment Defect",
+        "description": "Fiber bundle misalignment during layup process",
+        "defect_type": "fiber_orientation",
+        "target_angle_degrees": 0,
+        "actual_angle_degrees": 15,
+        "affected_area_percent": 12,
+        "strength_reduction_percent": 25
+      },
+      "defect_characteristics": {
+        "orientation_statistics": {
+          "target_angle_degrees": 0,
+          "actual_angle_degrees": 15,
+          "standard_deviation_degrees": 4.5,
+          "distribution_type": "normal"
+        },
+        "mechanical_impact": {
+          "in_plane_strength_reduction_percent": 2.7777777777777777,
+          "shear_strength_change_percent": 24.999999999999996,
+          "stiffness_matrix_rotation": true
+        }
+      },
+      "detectability": "medium",
+      "criticality": "minor_to_major",
+      "inspection_method": "ndt_ultrasonic",
+      "generated_date": "2025-09-18",
+      "process_related": true,
+      "quality_control_stage": "post_molding"
+    },
+    "DELAMINATION_INTERFACE": {
+      "id": "DELAMINATION_INTERFACE",
+      "title": "Inter-ply Delamination Pattern",
+      "source": "Manufacturing Process Simulation",
+      "description": "Adhesion failure between composite layers",
+      "defect_type": "manufacturing_defect",
+      "manufacturing_scenario": {
+        "title": "Inter-ply Delamination Pattern",
+        "description": "Adhesion failure between composite layers",
+        "defect_type": "delamination",
+        "interface_location": "ply_3_4_boundary",
+        "delamination_area_mm2": 850,
+        "propagation_direction": "fiber_parallel",
+        "detection_method": "ultrasonic_c_scan"
+      },
+      "defect_characteristics": {
+        "delamination_geometry": {
+          "area_mm2": 850,
+          "aspect_ratio": 3.2,
+          "shape": "elliptical",
+          "edge_condition": "mixed_mode_crack"
+        },
+        "interface_properties": {
+          "interface_strength_mpa": 45,
+          "fracture_toughness_j_m2": 250,
+          "mixed_mode_ratio": 0.6
+        },
+        "propagation_tendency": {
+          "critical_load_n": 1200,
+          "growth_rate_mm_cycle": 0.003,
+          "paris_law_constants": {
+            "C": 2.1e-08,
+            "m": 3.4
+          }
+        }
+      },
+      "detectability": "medium",
+      "criticality": "minor_to_major",
+      "inspection_method": "ndt_ultrasonic",
+      "generated_date": "2025-09-18",
+      "process_related": true,
+      "quality_control_stage": "post_molding"
+    },
+    "CHIN_STRAP_WEAR_PATTERN": {
+      "id": "CHIN_STRAP_WEAR_PATTERN",
+      "title": "Chin Strap Contact Wear",
+      "source": "Usage Simulation Model",
+      "description": "Localized wear from chin strap friction over 200 use cycles",
+      "defect_type": "wear_degradation",
+      "wear_scenario": {
+        "title": "Chin Strap Contact Wear",
+        "description": "Localized wear from chin strap friction over 200 use cycles",
+        "wear_type": "abrasive_contact",
+        "contact_location": "chin_strap_attachment",
+        "use_cycles": 200,
+        "contact_pressure_kpa": 15,
+        "wear_depth_microns": 45,
+        "wear_area_shape": "elliptical"
+      },
+      "wear_progression": {
+        "wear_mechanism": "abrasive_adhesive",
+        "wear_equation": "archard",
+        "parameters": {
+          "wear_coefficient": 1.2e-06,
+          "hardness_mpa": 180,
+          "contact_pressure_mpa": 0.015
+        },
+        "progression_model": {
+          "wear_volume_mm3": 3.0,
+          "wear_depth_microns": 45.0,
+          "surface_roughness_ra": 2.8
+        },
+        "geometry_evolution": {
+          "contact_area_increase_percent": 24.0,
+          "stress_redistribution": true,
+          "shape_factor_change": -0.05
+        }
+      },
+      "detectability": "high",
+      "criticality": "minor",
+      "inspection_method": "visual_dimensional",
+      "generated_date": "2025-09-18",
+      "usage_based": true,
+      "progressive": true
+    },
+    "MOUNTING_RAIL_WEAR": {
+      "id": "MOUNTING_RAIL_WEAR",
+      "title": "NVG Mount Rail Wear Pattern",
+      "source": "Usage Simulation Model",
+      "description": "Metal-on-composite wear from night vision device mounting",
+      "defect_type": "wear_degradation",
+      "wear_scenario": {
+        "title": "NVG Mount Rail Wear Pattern",
+        "description": "Metal-on-composite wear from night vision device mounting",
+        "wear_type": "adhesive_abrasive",
+        "mounting_cycles": 150,
+        "contact_material": "aluminum_7075",
+        "wear_groove_depth": 0.3,
+        "surface_roughness_increase": "Ra_2.5_to_8.2"
+      },
+      "wear_progression": {
+        "wear_mechanism": "adhesive_with_abrasive_particles",
+        "material_transfer": {
+          "aluminum_transfer_to_composite": true,
+          "composite_debris_formation": true,
+          "third_body_abrasion": "significant"
+        },
+        "groove_formation": {
+          "groove_depth_mm": 0.4,
+          "groove_width_mm": 0.6,
+          "groove_spacing_mm": 0.8
+        }
+      },
+      "detectability": "high",
+      "criticality": "minor",
+      "inspection_method": "visual_dimensional",
+      "generated_date": "2025-09-18",
+      "usage_based": true,
+      "progressive": true
+    },
+    "PADDING_COMPRESSION_SET": {
+      "id": "PADDING_COMPRESSION_SET",
+      "title": "Interior Padding Compression Set",
+      "source": "Usage Simulation Model",
+      "description": "Permanent deformation of interior foam padding",
+      "defect_type": "wear_degradation",
+      "wear_scenario": {
+        "title": "Interior Padding Compression Set",
+        "description": "Permanent deformation of interior foam padding",
+        "wear_type": "viscoelastic_deformation",
+        "compression_cycles": 500,
+        "max_compression_percent": 60,
+        "recovery_time_hours": 24,
+        "permanent_set_percent": 15
+      },
+      "wear_progression": {
+        "deformation_mechanism": "viscoelastic_creep",
+        "time_dependent_response": {
+          "instantaneous_compression_percent": 60,
+          "delayed_recovery_hours": 24,
+          "permanent_set_percent": 6.0
+        },
+        "material_property_changes": {
+          "elastic_modulus_reduction_percent": 10.0,
+          "energy_absorption_reduction_percent": 16.0
+        }
+      },
+      "detectability": "high",
+      "criticality": "minor",
+      "inspection_method": "visual_dimensional",
+      "generated_date": "2025-09-18",
+      "usage_based": true,
+      "progressive": true
+    },
+    "SALTWATER_CORROSION": {
+      "id": "SALTWATER_CORROSION",
+      "title": "Saltwater Corrosion Pattern",
+      "source": "Environmental Exposure Simulation",
+      "description": "Marine environment metal component corrosion",
+      "defect_type": "environmental_damage",
+      "environmental_scenario": {
+        "title": "Saltwater Corrosion Pattern",
+        "description": "Marine environment metal component corrosion",
+        "environment_type": "marine",
+        "exposure_duration_days": 90,
+        "salt_concentration_ppm": 35000,
+        "affected_components": [
+          "mounting_hardware",
+          "retention_buckles"
+        ],
+        "corrosion_type": "pitting_crevice"
+      },
+      "damage_model": {
+        "corrosion_mechanism": "electrochemical",
+        "corrosion_rate_mm_year": 0.15,
+        "pit_formation": {
+          "pit_density_per_cm2": 1.8,
+          "average_pit_depth_microns": 108.0,
+          "pit_diameter_microns": 72.0
+        },
+        "material_effects": {
+          "mass_loss_percent": 0.09,
+          "strength_retention_percent": 95.5
+        }
+      },
+      "detectability": "medium_to_high",
+      "criticality": "variable",
+      "inspection_method": "visual_chemical",
+      "generated_date": "2025-09-18",
+      "environment_specific": true,
+      "field_relevant": true
+    },
+    "DESERT_SAND_ABRASION": {
+      "id": "DESERT_SAND_ABRASION",
+      "title": "Desert Sand Abrasion Damage",
+      "source": "Environmental Exposure Simulation",
+      "description": "Silica particle abrasion from desert operations",
+      "defect_type": "environmental_damage",
+      "environmental_scenario": {
+        "title": "Desert Sand Abrasion Damage",
+        "description": "Silica particle abrasion from desert operations",
+        "environment_type": "arid_desert",
+        "particle_size_microns": [
+          50,
+          200
+        ],
+        "wind_velocity_mps": 15,
+        "exposure_hours": 480,
+        "abrasion_pattern": "windward_surface_erosion"
+      },
+      "damage_model": {
+        "abrasion_mechanism": "particle_impact_erosion",
+        "erosion_rate": {
+          "mass_loss_g_h": 0.003,
+          "surface_recession_microns_h": 0.12,
+          "roughness_increase_ra_h": 0.008
+        },
+        "particle_effects": {
+          "embedded_particles": true,
+          "surface_texture_change": "matte_finish",
+          "optical_property_change": "reduced_reflectance"
+        }
+      },
+      "detectability": "medium_to_high",
+      "criticality": "variable",
+      "inspection_method": "visual_chemical",
+      "generated_date": "2025-09-18",
+      "environment_specific": true,
+      "field_relevant": true
+    },
+    "JUNGLE_HUMIDITY_DEGRADATION": {
+      "id": "JUNGLE_HUMIDITY_DEGRADATION",
+      "title": "High Humidity Degradation Pattern",
+      "source": "Environmental Exposure Simulation",
+      "description": "Tropical environment moisture degradation effects",
+      "defect_type": "environmental_damage",
+      "environmental_scenario": {
+        "title": "High Humidity Degradation Pattern",
+        "description": "Tropical environment moisture degradation effects",
+        "environment_type": "tropical_humid",
+        "relative_humidity_percent": 95,
+        "temperature_c": 35,
+        "fungal_growth_risk": "high",
+        "material_effects": [
+          "hydrolysis",
+          "dimensional_swelling",
+          "mold_growth"
+        ]
+      },
+      "damage_model": {
+        "degradation_mechanism": "hydrolytic_biological",
+        "moisture_effects": {
+          "moisture_uptake_percent": 1.8,
+          "dimensional_swelling_percent": 0.3,
+          "tg_depression_c": -12
+        },
+        "biological_effects": {
+          "fungal_growth_probability": 0.85,
+          "growth_rate_mm_day": 0.15,
+          "biodeterioration_severity": "moderate"
+        }
+      },
+      "detectability": "medium_to_high",
+      "criticality": "variable",
+      "inspection_method": "visual_chemical",
+      "generated_date": "2025-09-18",
+      "environment_specific": true,
+      "field_relevant": true
+    }
+  },
+  "verification": "materials_science_based"
+}

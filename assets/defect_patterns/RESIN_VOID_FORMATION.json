@@ -1,0 +1,47 @@
+{
+  "id": "RESIN_VOID_FORMATION",
+  "title": "Resin Matrix Void Formation",
+  "source": "Manufacturing Process Simulation",
+  "description": "Air entrapment during resin transfer molding",
+  "defect_type": "manufacturing_defect",
+  "manufacturing_scenario": {
+    "title": "Resin Matrix Void Formation",
+    "description": "Air entrapment during resin transfer molding",
+    "defect_type": "void_formation",
+    "process_stage": "resin_transfer_molding",
+    "void_size_distribution": "lognormal",
+    "void_density_per_cm2": 2.3,
+    "formation_mechanism": "air_entrapment_degassing"
+  },
+  "defect_characteristics": {
+    "void_statistics": {
+      "number_density_per_cm2": 2.3,
+      "size_distribution": {
+        "type": "lognormal",
+        "mean_diameter_microns": 150,
+        "standard_deviation": 0.6
+      },
+      "shape_factor": 0.85,
+      "connectivity": "isolated"
+    },
+    "formation_physics": {
+      "nucleation_sites": "fiber_matrix_interface",
+      "growth_mechanism": "diffusion_limited",
+      "stabilizing_factors": [
+        "surface_tension",
+        "viscosity"
+      ]
+    },
+    "property_impact": {
+      "strength_reduction_percent": 7.359999999999999,
+      "modulus_reduction_percent": 4.14,
+      "fatigue_life_reduction_percent": 12.649999999999999
+    }
+  },
+  "detectability": "medium",
+  "criticality": "minor_to_major",
+  "inspection_method": "ndt_ultrasonic",
+  "generated_date": "2025-09-18",
+  "process_related": true,
+  "quality_control_stage": "post_molding"
+}

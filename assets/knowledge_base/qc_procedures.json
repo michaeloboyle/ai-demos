@@ -1,0 +1,59 @@
+{
+  "visual_inspection": {
+    "procedure_id": "VIS_001",
+    "title": "Visual Inspection Protocol for Ballistic Helmets",
+    "description": "Systematic visual inspection procedure for helmet QC",
+    "inspection_points": [
+      "External shell integrity check",
+      "Impact damage assessment",
+      "Surface defect identification",
+      "Hardware mounting inspection",
+      "Retention system evaluation"
+    ],
+    "defect_categories": [
+      "Critical: Ballistic impact damage, structural cracks",
+      "Major: Delamination, significant wear, hardware failure",
+      "Minor: Surface scratches, color changes, minor wear"
+    ],
+    "acceptance_criteria": {
+      "critical_defects": "Zero tolerance - immediate rejection",
+      "major_defects": "Engineering review required",
+      "minor_defects": "Acceptable with documentation"
+    }
+  },
+  "dimensional_inspection": {
+    "procedure_id": "DIM_001",
+    "title": "Dimensional Measurement Protocol",
+    "description": "Precision measurement of helmet dimensions and tolerances",
+    "measurements": [
+      "Overall dimensions (L x W x H)",
+      "Shell thickness at critical points",
+      "Retention system geometry",
+      "Mounting hole positions",
+      "Internal volume assessment"
+    ],
+    "tolerance_specifications": {
+      "shell_thickness": "±0.1mm",
+      "overall_dimensions": "±2.0mm",
+      "mounting_holes": "±0.5mm"
+    }
+  },
+  "defect_detection": {
+    "procedure_id": "DEF_001",
+    "title": "AI-Assisted Defect Detection Protocol",
+    "description": "Computer vision system for automated defect detection",
+    "detection_capabilities": [
+      "Impact damage pattern recognition",
+      "Surface crack identification",
+      "Delamination detection",
+      "Wear pattern analysis",
+      "Color deviation assessment"
+    ],
+    "ai_model_requirements": {
+      "image_resolution": "Minimum 2MP, preferably 5MP+",
+      "lighting_conditions": "Controlled LED lighting, 5000K color temperature",
+      "image_format": "JPEG or PNG, uncompressed preferred",
+      "detection_accuracy": ">95% for critical defects, >90% for major defects"
+    }
+  }
+}

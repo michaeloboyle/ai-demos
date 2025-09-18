@@ -1,0 +1,34 @@
+{
+  "source": "Official Government Standards (ASSIST, GSA, NASA)",
+  "count": 3,
+  "standards": {
+    "FED-STD-595C": {
+      "id": "FED-STD-595C",
+      "title": "Colors Used in Government Procurement",
+      "description": "Standard colors for use in government procurement",
+      "source": "GSA Federal Standards",
+      "url": "https://www.gsa.gov/policy-regulations/policy/acquisition-policy/federal-acquisition-regulation-far",
+      "collection_date": "2025-09-18",
+      "official": true
+    },
+    "FED-STD-313": {
+      "id": "FED-STD-313",
+      "title": "Material Safety Data, Transportation Data and Disposal Data for Hazardous Materials",
+      "description": "Standard for hazardous material data sheets",
+      "source": "GSA Federal Standards",
+      "url": "https://www.gsa.gov/policy-regulations/policy/acquisition-policy/federal-acquisition-regulation-far",
+      "collection_date": "2025-09-18",
+      "official": true
+    },
+    "NASA-STD-5017": {
+      "id": "NASA-STD-5017",
+      "title": "Design and Development Requirements for Mechanisms",
+      "description": "",
+      "source": "NASA Technical Standards Program",
+      "url": "https://standards.nasa.gov/standard/nasa/nasa-std-5017",
+      "collection_date": "2025-09-18",
+      "official": true
+    }
+  },
+  "verification": "official_government_sources"
+}

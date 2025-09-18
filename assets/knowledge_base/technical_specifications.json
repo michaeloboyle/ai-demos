@@ -1,0 +1,37 @@
+{
+  "ballistic_helmets": {
+    "specification_source": "MIL-DTL-44099 and derivative standards",
+    "common_materials": [
+      "Aramid fiber composite (Kevlar, Twaron)",
+      "Ultra-high molecular weight polyethylene (UHMWPE)",
+      "Polycarbonate face shields",
+      "Foam padding systems"
+    ],
+    "performance_requirements": {
+      "ballistic_protection": "NIJ Level IIIA or higher",
+      "impact_protection": "ACH standard compliance",
+      "weight_limit": "Maximum 3.5 lbs (1.6 kg)",
+      "temperature_range": "-40°C to +60°C operational"
+    },
+    "test_standards": [
+      "MIL-STD-662F: V50 ballistic testing",
+      "MIL-STD-810G: Environmental testing",
+      "NIJ-STD-0101.06: Ballistic resistance testing"
+    ]
+  },
+  "quality_control": {
+    "inspection_frequency": "Every manufactured unit",
+    "statistical_process_control": "100% visual, 10% dimensional sampling",
+    "defect_classification": {
+      "Class A": "Critical safety defects - zero tolerance",
+      "Class B": "Major functional defects - engineering review",
+      "Class C": "Minor cosmetic defects - acceptable with limits"
+    },
+    "documentation_requirements": [
+      "Material certification",
+      "Manufacturing process records",
+      "Quality inspection results",
+      "Traceability documentation"
+    ]
+  }
+}

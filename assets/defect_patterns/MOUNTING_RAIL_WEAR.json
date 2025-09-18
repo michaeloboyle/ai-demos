@@ -1,0 +1,35 @@
+{
+  "id": "MOUNTING_RAIL_WEAR",
+  "title": "NVG Mount Rail Wear Pattern",
+  "source": "Usage Simulation Model",
+  "description": "Metal-on-composite wear from night vision device mounting",
+  "defect_type": "wear_degradation",
+  "wear_scenario": {
+    "title": "NVG Mount Rail Wear Pattern",
+    "description": "Metal-on-composite wear from night vision device mounting",
+    "wear_type": "adhesive_abrasive",
+    "mounting_cycles": 150,
+    "contact_material": "aluminum_7075",
+    "wear_groove_depth": 0.3,
+    "surface_roughness_increase": "Ra_2.5_to_8.2"
+  },
+  "wear_progression": {
+    "wear_mechanism": "adhesive_with_abrasive_particles",
+    "material_transfer": {
+      "aluminum_transfer_to_composite": true,
+      "composite_debris_formation": true,
+      "third_body_abrasion": "significant"
+    },
+    "groove_formation": {
+      "groove_depth_mm": 0.4,
+      "groove_width_mm": 0.6,
+      "groove_spacing_mm": 0.8
+    }
+  },
+  "detectability": "high",
+  "criticality": "minor",
+  "inspection_method": "visual_dimensional",
+  "generated_date": "2025-09-18",
+  "usage_based": true,
+  "progressive": true
+}

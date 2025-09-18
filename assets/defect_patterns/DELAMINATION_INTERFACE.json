@@ -1,0 +1,43 @@
+{
+  "id": "DELAMINATION_INTERFACE",
+  "title": "Inter-ply Delamination Pattern",
+  "source": "Manufacturing Process Simulation",
+  "description": "Adhesion failure between composite layers",
+  "defect_type": "manufacturing_defect",
+  "manufacturing_scenario": {
+    "title": "Inter-ply Delamination Pattern",
+    "description": "Adhesion failure between composite layers",
+    "defect_type": "delamination",
+    "interface_location": "ply_3_4_boundary",
+    "delamination_area_mm2": 850,
+    "propagation_direction": "fiber_parallel",
+    "detection_method": "ultrasonic_c_scan"
+  },
+  "defect_characteristics": {
+    "delamination_geometry": {
+      "area_mm2": 850,
+      "aspect_ratio": 3.2,
+      "shape": "elliptical",
+      "edge_condition": "mixed_mode_crack"
+    },
+    "interface_properties": {
+      "interface_strength_mpa": 45,
+      "fracture_toughness_j_m2": 250,
+      "mixed_mode_ratio": 0.6
+    },
+    "propagation_tendency": {
+      "critical_load_n": 1200,
+      "growth_rate_mm_cycle": 0.003,
+      "paris_law_constants": {
+        "C": 2.1e-08,
+        "m": 3.4
+      }
+    }
+  },
+  "detectability": "medium",
+  "criticality": "minor_to_major",
+  "inspection_method": "ndt_ultrasonic",
+  "generated_date": "2025-09-18",
+  "process_related": true,
+  "quality_control_stage": "post_molding"
+}

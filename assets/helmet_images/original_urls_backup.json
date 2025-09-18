@@ -1,0 +1,20 @@
+{
+  "GENTEX_ORIGINAL_FAST_SF": {
+    "id": "GENTEX_ORIGINAL_FAST_SF",
+    "title": "FAST SF Helmet - Tan (Original Example)",
+    "original_url": "https://cdn11.bigcommerce.com/s-tdvizl1wrj/images/stencil/original/products/1097/8224/FAST_SF_NG_w_RAILINK_PDP_01_Tan__76635.1743771107.jpg",
+    "verification_status": "curl_confirmed_original"
+  },
+  "GENTEX_SCRAPED_1": {
+    "id": "GENTEX_SCRAPED_1",
+    "title": "Gentex Helmet Product Image (Scraped)",
+    "original_url": "https://cdn11.bigcommerce.com/s-tdvizl1wrj/stencil/ac8861d0-0bec-013e-9734-4e04d73a3868/e/6579fe20-4a29-013e-ca74-52b5c4b168da/img/menu/helmet-systems/product-image.jpg",
+    "verification_status": "curl_confirmed_scraped"
+  },
+  "GENTEX_SCRAPED_2": {
+    "id": "GENTEX_SCRAPED_2",
+    "title": "Gentex Helmet New Design (Scraped)",
+    "original_url": "https://cdn11.bigcommerce.com/s-tdvizl1wrj/stencil/ac8861d0-0bec-013e-9734-4e04d73a3868/e/6579fe20-4a29-013e-ca74-52b5c4b168da/img/menu/helmet-systems/helmet-new.jpg",
+    "verification_status": "curl_confirmed_scraped"
+  }
+}

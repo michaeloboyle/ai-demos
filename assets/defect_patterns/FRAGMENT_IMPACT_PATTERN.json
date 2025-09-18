@@ -1,0 +1,51 @@
+{
+  "id": "FRAGMENT_IMPACT_PATTERN",
+  "title": "Fragment Impact - Multi-Point Damage",
+  "source": "Physics-Based Simulation",
+  "description": "Multiple fragment impacts from explosive proximity",
+  "defect_type": "impact_damage",
+  "impact_scenario": {
+    "title": "Fragment Impact - Multi-Point Damage",
+    "description": "Multiple fragment impacts from explosive proximity",
+    "impact_type": "fragmentation",
+    "fragment_count": 7,
+    "fragment_size_range": [
+      2,
+      8
+    ],
+    "impact_angles": [
+      15,
+      30,
+      45,
+      60,
+      75
+    ],
+    "damage_distribution": "clustered_random"
+  },
+  "damage_geometry": {
+    "primary_damage": {
+      "shape": "multiple_circular",
+      "fragment_count": 7,
+      "diameter_range_mm": [
+        3,
+        12
+      ],
+      "pattern": "clustered_random",
+      "individual_depth_mm": [
+        0.5,
+        2.0
+      ]
+    },
+    "interaction_effects": {
+      "stress_overlap": true,
+      "crack_linking": "possible",
+      "combined_effect": "additive"
+    }
+  },
+  "detectability": "high",
+  "criticality": "critical",
+  "inspection_method": "visual_tactile",
+  "generated_date": "2025-09-18",
+  "physics_based": true,
+  "validation_status": "synthetic_verified"
+}
