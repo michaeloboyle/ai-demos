@@ -15,7 +15,7 @@ import shutil
 from pathlib import Path
 
 # External drive paths
-EXTERNAL_DRIVE = "/Volumes/black box"
+EXTERNAL_DRIVE = "/Volumes/black box - Backup Data 2020"
 MODEL_BASE_PATH = os.path.join(EXTERNAL_DRIVE, "defense-ai-models")
 IMAGE_MODELS_PATH = os.path.join(MODEL_BASE_PATH, "image-generation")
 
@@ -76,7 +76,7 @@ def check_dependencies():
         "diffusers",
         "transformers",
         "accelerate",
-        "pillow",
+        "PIL",  # Pillow installs as PIL
         "numpy"
     ]
 
@@ -87,8 +87,12 @@ def check_dependencies():
             __import__(package)
             print(f"  ✅ {package}")
         except ImportError:
-            missing_packages.append(package)
-            print(f"  ❌ {package} - Missing")
+            if package == "PIL":
+                missing_packages.append("pillow")
+                print(f"  ❌ pillow - Missing")
+            else:
+                missing_packages.append(package)
+                print(f"  ❌ {package} - Missing")
 
     if missing_packages:
         print(f"\n📦 Install missing packages:")
