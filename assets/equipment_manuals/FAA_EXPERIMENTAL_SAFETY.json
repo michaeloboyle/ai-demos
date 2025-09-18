@@ -1,0 +1,10 @@
+{
+  "id": "FAA_EXPERIMENTAL_SAFETY",
+  "title": "Experimental Aircraft Safety Requirements",
+  "source": "FAA Aircraft Registry",
+  "category": "experimental",
+  "description": "Safety equipment and operational requirements for experimental aircraft",
+  "url": "https://registry.faa.gov",
+  "collection_date": "2025-09-18",
+  "official": true
+}

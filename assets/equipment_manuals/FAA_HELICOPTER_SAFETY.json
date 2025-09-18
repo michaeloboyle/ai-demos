@@ -1,0 +1,10 @@
+{
+  "id": "FAA_HELICOPTER_SAFETY",
+  "title": "FAA Helicopter Safety Equipment Requirements",
+  "source": "FAA Aircraft Registry",
+  "category": "helicopter",
+  "description": "Safety equipment requirements for helicopter operations",
+  "url": "https://registry.faa.gov",
+  "collection_date": "2025-09-18",
+  "official": true
+}
