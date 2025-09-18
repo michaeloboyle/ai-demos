@@ -47,6 +47,52 @@ Gentex Corporation manufactures defense and safety equipment including:
 - **Peak Memory Usage**: 6-8GB per active model
 - **Model Switching**: <10 seconds between tasks
 
+### Technical Architecture Overview
+
+```mermaid
+graph TB
+    subgraph "Mac Mini M2 Pro (16GB)"
+        subgraph "Jupyter Environment"
+            PL[Portfolio Launcher]
+            CD[Compliance Demo]
+            HQ[Helmet QC Demo]
+            FS[Field Support Demo]
+        end
+
+        subgraph "Ollama Service"
+            LLM[Llama 3.1 8B<br/>Text Processing]
+            VLM[LLaVA 1.6 7B<br/>Vision Analysis]
+            EMB[MiniLM-L6-v2<br/>Embeddings]
+        end
+
+        subgraph "Data Layer"
+            MS[MIL Standards DB]
+            EK[Equipment KB]
+            HI[Helmet Images]
+            SC[Sample Content]
+        end
+    end
+
+    PL --> CD
+    PL --> HQ
+    PL --> FS
+
+    CD --> LLM
+    CD --> EMB
+    CD --> MS
+
+    HQ --> VLM
+    HQ --> LLM
+    HQ --> HI
+
+    FS --> LLM
+    FS --> EK
+
+    style LLM fill:#e1f5fe
+    style VLM fill:#f3e5f5
+    style EMB fill:#e8f5e8
+```
+
 ## Demo Portfolio Structure
 
 ### 1. Portfolio Launcher (`gentex_ai_portfolio.ipynb`)
@@ -166,6 +212,27 @@ compliance_widget = widgets.interactive(...)
 ```
 
 #### Demo Flow:
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant J as Jupyter Notebook
+    participant L as Llama 3.1 8B
+    participant E as Embeddings
+    participant DB as MIL-STD Database
+
+    U->>J: Upload specification document
+    J->>L: Extract requirements from text
+    L->>J: Structured requirements list
+    J->>E: Generate embeddings for requirements
+    E->>J: Requirement vectors
+    J->>DB: Search similar MIL standards
+    DB->>J: Matching standards
+    J->>L: Generate compliance matrix
+    L->>J: Traffic light assessment
+    J->>U: Display compliance report
+```
+
 1. **Input**: Sample helmet specification document
 2. **Processing**: AI extracts 12+ requirements automatically
 3. **Analysis**: Cross-reference against MIL-STD database
@@ -270,6 +337,27 @@ analysis_output = widgets.Output()
 ```
 
 #### Demo Flow:
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant J as Jupyter Notebook
+    participant V as LLaVA 1.6 7B
+    participant L as Llama 3.1 8B
+    participant CV as OpenCV
+
+    U->>J: Select helmet image
+    J->>CV: Preprocess image (resize, normalize)
+    CV->>J: Processed image
+    J->>V: Analyze image for defects
+    V->>J: Defect locations & descriptions
+    J->>L: Classify defect severity
+    L->>J: Pass/Fail/Rework classification
+    J->>CV: Generate visual overlay
+    CV->>J: Annotated image
+    J->>U: Display QC report with overlay
+```
+
 1. **Input**: Display 4 helmet sample images (clean → severely damaged)
 2. **Analysis**: AI analyzes each image for defects
 3. **Detection**: Visual overlay showing defect locations
@@ -383,6 +471,28 @@ demo_scenarios = [
 ```
 
 #### Demo Flow:
+
+```mermaid
+sequenceDiagram
+    participant U as User/Technician
+    participant J as Jupyter Notebook
+    participant L as Llama 3.1 8B
+    participant KB as Equipment KB
+
+    U->>J: Enter equipment issue
+    J->>KB: Identify equipment type
+    KB->>J: Equipment context & procedures
+    J->>L: Process query with context
+    L->>J: Contextual response
+    J->>U: Display solution with part numbers
+
+    Note over U,L: Multi-turn conversation
+    U->>J: Follow-up question
+    J->>L: Continue conversation with history
+    L->>J: Updated response
+    J->>U: Refined solution
+```
+
 1. **Launch**: Interactive chat interface within notebook
 2. **Scenarios**: Pre-loaded realistic field problems
 3. **Conversation**: Multi-turn dialogue demonstrating context awareness
@@ -399,6 +509,36 @@ demo_scenarios = [
 ---
 
 ## Implementation Timeline
+
+```mermaid
+gantt
+    title Gentex AI Demo Development Timeline
+    dateFormat  X
+    axisFormat  %L
+
+    section Phase 1: Foundation
+    Portfolio Structure         :milestone, m1, 0, 0
+    Portfolio Navigation        :p1, 0, 2
+    Compliance Core             :p2, 2, 4
+    Compliance Demo             :p3, 4, 6
+    Phase 1 Complete           :milestone, m2, 6, 6
+
+    section Phase 2: Computer Vision
+    Vision System Setup         :cv1, 6, 7
+    Helmet Image Generation     :cv2, 7, 8
+    LLaVA Integration          :cv3, 8, 9
+    QC Demo Interface          :cv4, 9, 10
+    Portfolio Integration      :cv5, 10, 11
+    Testing & Refinement       :cv6, 11, 12
+    Phase 2 Complete           :milestone, m3, 12, 12
+
+    section Phase 3: Chatbot & Final
+    Field Support Assistant     :fs1, 12, 13
+    Portfolio Integration      :fs2, 13, 14
+    Documentation & Prep       :fs3, 14, 15
+    Final Testing              :fs4, 15, 16
+    Demo Ready                 :milestone, m4, 16, 16
+```
 
 ### Phase 1: Foundation (Day 1)
 - **Hour 1-2**: Portfolio notebook structure and navigation
@@ -466,6 +606,37 @@ gentex-ai-demos/
 - **Business Alignment**: Clear ROI and implementation path
 
 ## Risk Mitigation
+
+### Model Memory Management Strategy
+
+```mermaid
+flowchart TD
+    Start([Demo Launch]) --> Check{Check Current Task}
+
+    Check -->|Compliance| LoadText[Load Llama 3.1 8B<br/>Unload Vision Models]
+    Check -->|Vision QC| LoadVision[Load LLaVA 1.6 7B<br/>Unload Text Models]
+    Check -->|Field Support| LoadText
+
+    LoadText --> TextReady[Text Model Ready<br/>6GB Memory]
+    LoadVision --> VisionReady[Vision Model Ready<br/>6GB Memory]
+
+    TextReady --> ProcessText[Process Text/Chat]
+    VisionReady --> ProcessVision[Process Images]
+
+    ProcessText --> TaskComplete{Task Complete?}
+    ProcessVision --> TaskComplete
+
+    TaskComplete -->|No| ProcessText
+    TaskComplete -->|No| ProcessVision
+    TaskComplete -->|Yes| Unload[Unload Current Model]
+
+    Unload --> Check
+
+    style LoadText fill:#e1f5fe
+    style LoadVision fill:#f3e5f5
+    style TextReady fill:#e1f5fe
+    style VisionReady fill:#f3e5f5
+```
 
 ### Technical Risks
 - **Model Loading**: Sequential model management for 16GB RAM constraints
