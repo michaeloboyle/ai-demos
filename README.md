@@ -4,11 +4,11 @@ Interactive Jupyter notebook demonstrations showcasing AI/ML integration for man
 
 ## Overview
 
-This repository contains self-contained AI demonstrations specifically designed for Gentex Corporation, showcasing practical applications of artificial intelligence in manufacturing contexts including quality control, compliance validation, and field support.
+This repository contains self-contained AI demonstrations showcasing practical applications of artificial intelligence in defense manufacturing contexts including quality control, compliance validation, and field support.
 
 ## Demo Portfolio
 
-### 📊 Portfolio Launcher (`gentex_ai_portfolio.ipynb`)
+### 📊 Portfolio Launcher (`defense_ai_portfolio.ipynb`)
 Executive dashboard with business value metrics and demo navigation.
 
 ### 📋 Compliance Assistant (`compliance_demo.ipynb`)
@@ -53,7 +53,7 @@ jupyter notebook
 
 ## Documentation
 
-See [Technical Specification](docs/gentex-ai-demo-specification.md) for detailed implementation requirements and business context.
+See [Technical Specification](docs/defense-ai-demo-specification.md) for detailed implementation requirements and business context.
 
 ## Development Timeline
 
