@@ -50,7 +50,7 @@ Gentex Corporation manufactures defense and safety equipment including:
 ### Technical Architecture Overview
 
 ```mermaid
-graph TB
+graph TD
     subgraph "Mac Mini M2 Pro (16GB)"
         subgraph "Jupyter Environment"
             PL[Portfolio Launcher]
@@ -69,7 +69,7 @@ graph TB
             MS[MIL Standards DB]
             EK[Equipment KB]
             HI[Helmet Images]
-            SC[Sample Content]
+            SC[Sample Content<br/>• Cached AI responses<br/>• Demo screenshots<br/>• Fallback examples]
         end
     end
 
@@ -88,9 +88,15 @@ graph TB
     FS --> LLM
     FS --> EK
 
+    %% Fallback connections for offline/cached content
+    CD -.-> SC
+    HQ -.-> SC
+    FS -.-> SC
+
     style LLM fill:#e1f5fe
     style VLM fill:#f3e5f5
     style EMB fill:#e8f5e8
+    style SC fill:#fff3e0
 ```
 
 ## Demo Portfolio Structure
