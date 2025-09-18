@@ -1469,6 +1469,215 @@ flowchart TD
 - **Memory Benefits**: Concurrent operation possible - no model switching delays
 - **Collaboration Setup**: Simplified setup with standard Python libraries only
 
+## Test-Driven Development Strategy
+
+### Hybrid TDD Architecture
+
+The Defense Manufacturing AI Demo Portfolio implements a **hybrid TDD approach** combining reliable, tested core logic with interactive demonstration notebooks.
+
+#### Repository Structure:
+```
+ai-demos/
+├── notebooks/           # Demonstration notebooks (UI/presentation layer)
+│   ├── defense_ai_portfolio.ipynb    # Executive dashboard
+│   ├── compliance_demo.ipynb         # MIL-STD validation demo
+│   ├── helmet_qc_demo.ipynb          # Computer vision QC demo
+│   └── field_support_demo.ipynb      # AI chatbot demo
+├── src/                # Core business logic (fully tested)
+│   ├── compliance/     # MIL-STD validation engine
+│   ├── qc_vision/      # Defect detection algorithms
+│   ├── field_support/  # Equipment knowledge base queries
+│   └── defect_generation/  # Physics-based defect patterns
+├── tests/              # Comprehensive test suite
+│   ├── unit/           # Component-level tests
+│   ├── integration/    # AI model integration tests
+│   ├── fixtures/       # Test data and mock responses
+│   └── conftest.py     # Test configuration
+└── scripts/            # Data processing & setup utilities
+```
+
+### TDD Implementation Strategy
+
+#### Phase 1: Core Module Development (TDD)
+- **Test-First Development**: Write failing tests before implementation
+- **Business Logic Separation**: Extract testable components from notebook demonstrations
+- **Incremental Implementation**: Red-Green-Refactor cycle for all core functionality
+
+#### Phase 2: Notebook Integration (BDD)
+- **Tested Module Import**: Notebooks import and demonstrate fully-tested modules
+- **Known Behavior**: Predictable outcomes prevent demo failures
+- **UI/Presentation Layer**: Focus notebooks on visualization and user experience
+
+### Testing Strategy by Component
+
+#### **✅ Highly Testable Components** (Core TDD):
+
+##### DefectDetector Module
+```python
+# tests/unit/test_defect_detection.py
+def test_physics_based_crack_generation():
+    generator = DefectGenerator()
+    crack = generator.generate_crack_defect(
+        helmet_material="carbon_fiber",
+        impact_type="ballistic",
+        severity=0.7
+    )
+    assert crack.propagation_pattern == "branching"
+    assert crack.depth_variation > 0.5
+    assert crack.location_distribution == "stress_concentration_points"
+
+def test_defect_overlay_accuracy():
+    detector = DefectDetector()
+    result = detector.analyze_helmet_image("test_helmet_with_crack.jpg")
+    assert result.defects[0].type == "crack"
+    assert result.confidence > 0.8
+    assert len(result.defects) == 1
+```
+
+##### ComplianceValidator Module
+```python
+# tests/unit/test_compliance_validation.py
+def test_mil_std_requirement_extraction():
+    validator = ComplianceValidator()
+    requirements = validator.extract_requirements(sample_defense_contract)
+    assert len(requirements) >= 12
+    assert any(req.standard == "MIL-DTL-44099" for req in requirements)
+
+def test_compliance_matrix_generation():
+    validator = ComplianceValidator()
+    matrix = validator.generate_compliance_matrix(requirements, mil_standards)
+    assert matrix.overall_score > 0.0
+    assert matrix.has_non_compliant_items() == True
+```
+
+##### FieldSupportEngine Module
+```python
+# tests/unit/test_field_support.py
+def test_equipment_knowledge_lookup():
+    engine = FieldSupportEngine()
+    response = engine.query_equipment("SPH-4 visor cracked during mission")
+    assert "emergency procedures" in response.content.lower()
+    assert len(response.part_numbers) > 0
+    assert response.equipment_type == "SPH-4"
+```
+
+#### **🔍 Integration Testing**:
+
+##### AI Model Integration
+```python
+# tests/integration/test_ai_model_integration.py
+def test_llava_helmet_analysis():
+    """Test LLaVA integration with mock responses"""
+    detector = DefectDetector()
+    with mock_llava_response(expected_defects=["crack", "scratch"]):
+        result = detector.analyze_helmet_image("test_helmet.jpg")
+        assert len(result.defects) == 2
+
+def test_llama_compliance_parsing():
+    """Test Llama integration with known documents"""
+    validator = ComplianceValidator()
+    with mock_llama_response(expected_requirements=sample_requirements):
+        requirements = validator.extract_requirements(test_document)
+        assert len(requirements) == len(sample_requirements)
+```
+
+##### Image Processing Pipeline
+```python
+# tests/integration/test_image_processing.py
+def test_defect_overlay_pipeline():
+    """Test complete image processing workflow"""
+    pipeline = ImageProcessingPipeline()
+    result = pipeline.process_helmet_image(
+        image_path="test_helmet.jpg",
+        defect_patterns=["crack", "scratch"]
+    )
+    assert result.processed_image.shape == result.original_image.shape
+    assert len(result.overlay_annotations) > 0
+```
+
+#### **📋 Manual Validation** (Demo Layer):
+- **Notebook UI/UX**: Interactive widget behavior and visual presentation
+- **Executive Dashboard**: Business metrics calculation and display
+- **Demo Flow**: End-to-end demonstration sequence timing
+
+### Development Workflow
+
+#### TDD Cycle for Core Components:
+1. **Write Failing Test**: Define expected behavior for new feature
+2. **Implement Minimum Code**: Make test pass with simplest solution
+3. **Refactor**: Optimize for performance and maintainability
+4. **Integration**: Import tested module into demonstration notebook
+
+#### Example Implementation:
+```python
+# src/qc_vision/defect_detector.py - Fully tested module
+class DefectDetector:
+    def analyze_helmet_image(self, image_path: str) -> DefectResult:
+        """Analyze helmet for defects - 100% test coverage"""
+        # Implementation verified through comprehensive tests
+        pass
+
+    def generate_defect_overlay(self, image: np.ndarray, defects: List[Defect]) -> np.ndarray:
+        """Generate visual overlay - testable with fixtures"""
+        # Known behavior prevents demo failures
+        pass
+
+# notebooks/helmet_qc_demo.ipynb - Demonstration layer
+from src.qc_vision import DefectDetector
+
+detector = DefectDetector()  # Fully tested, reliable behavior
+result = detector.analyze_helmet_image(uploaded_image)  # Predictable outcomes
+display_qc_report(result)  # Focus on presentation, not logic
+```
+
+### TDD Benefits for Defense Manufacturing Project
+
+#### **Quality Assurance**:
+- **Executive Demo Reliability**: Tested components prevent unexpected failures
+- **Regulatory Compliance**: Provable accuracy for defense applications
+- **Consistent Behavior**: Predictable outcomes during stakeholder presentations
+
+#### **Development Efficiency**:
+- **Fast Iteration**: Test core logic without running full notebooks
+- **Parallel Development**: Team members can work on tested interfaces
+- **Debugging Speed**: Isolated component testing identifies issues quickly
+
+#### **Documentation & Collaboration**:
+- **Living Specification**: Tests document expected behavior and business rules
+- **Team Onboarding**: Clear component interfaces and behavioral expectations
+- **Change Management**: Refactor safely with comprehensive test coverage
+
+### Test Data Management
+
+#### Fixtures and Mock Data:
+```
+tests/fixtures/
+├── sample_helmet_images/
+│   ├── pursuit_clean.jpg           # Baseline reference
+│   ├── pursuit_with_crack.jpg      # Known defect for testing
+│   └── pursuit_multiple_defects.jpg # Complex test case
+├── test_mil_standards/
+│   ├── sample_requirements.json    # Test compliance documents
+│   └── mock_standards_db.json      # Controlled test data
+├── mock_ai_responses/
+│   ├── llava_defect_responses.json # Predictable vision responses
+│   └── llama_parsing_responses.json # Controlled text analysis
+└── equipment_test_data/
+    └── sample_queries_responses.json # Field support test cases
+```
+
+### Performance Testing
+
+#### Load Testing for Demo Scenarios:
+- **Concurrent Model Usage**: Ensure memory constraints are respected
+- **Image Processing Speed**: Verify <1 second defect overlay generation
+- **Knowledge Base Queries**: Test response times for field support scenarios
+- **Model Switching**: Validate <10 second transitions between AI models
+
+### Conclusion
+
+The hybrid TDD approach ensures **executive-grade demonstration reliability** while maintaining rapid development velocity. Tested core modules provide the foundation for confident stakeholder presentations, while interactive notebooks deliver the visual impact needed for defense manufacturing contexts.
+
 ## Conclusion
 
 This specification outlines a comprehensive AI demo portfolio specifically designed for defense manufacturing contexts. The self-contained Jupyter notebook approach ensures:
