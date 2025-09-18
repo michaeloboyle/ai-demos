@@ -44,7 +44,7 @@ This portfolio demonstrates practical AI applications for defense and safety equ
 - **Base Generation**: Stable Diffusion XL (~7GB)
 - **Precision Control**: ControlNet Canny + Depth (~3GB)
 - **Defect Generation**: SDXL Inpainting (~7GB)
-- **Total Image Models**: ~17GB on `/Volumes/black box/defense-ai-models/`
+- **Total Image Models**: ~17GB on `/Volumes/black box - Backup Data 2020/defense-ai-models/`
 
 #### Memory Management Strategy
 - **Sequential Loading**: Unload Ollama during image generation
@@ -173,7 +173,7 @@ from IPython.display import display, HTML
 import ipywidgets as widgets
 
 # External drive asset paths
-DEMO_ASSETS = os.environ.get('DEMO_ASSETS', '/Volumes/black box/defense-ai-demo-assets')
+DEMO_ASSETS = os.environ.get('DEMO_ASSETS', '/Volumes/black box - Backup Data 2020/defense-ai-models')
 MIL_STANDARDS_PATH = f"{DEMO_ASSETS}/mil_standards"
 SAMPLE_CONTENT_PATH = f"{DEMO_ASSETS}/sample_content"
 ```
@@ -618,8 +618,9 @@ python scripts/setup_external.py
 # 4. Download models if needed
 
 # Manual setup (if script fails):
-export OLLAMA_MODELS="/Volumes/black box/defense-ai-demo-assets/models"
-export DEMO_ASSETS="/Volumes/black box/defense-ai-demo-assets"
+export OLLAMA_MODELS="/Volumes/black box - Backup Data 2020/defense-ai-models/ollama"
+export DEMO_ASSETS="/Volumes/black box - Backup Data 2020/defense-ai-models"
+export HF_HOME="/Volumes/black box - Backup Data 2020/defense-ai-models/huggingface-cache"
 
 # Install Ollama for model management
 brew install ollama
@@ -633,8 +634,13 @@ ollama list
 ls -la "$DEMO_ASSETS"
 df -h "/Volumes/black box"
 
-# Required Python packages
-pip install ollama transformers sentence-transformers opencv-python matplotlib ipywidgets pandas pillow jupyter
+# Python Virtual Environment Setup (Required for Image Generation)
+python3 -m venv venv
+source venv/bin/activate
+
+# Required Python packages for local image generation
+pip install torch diffusers transformers accelerate pillow
+pip install ollama sentence-transformers opencv-python matplotlib ipywidgets pandas jupyter
 
 # Jupyter Extensions
 jupyter nbextension enable --py widgetsnbextension
@@ -1323,16 +1329,13 @@ Reference (3560×3776) → Generation Input (1024×1024) → Final Output (2048�
 ```
 
 #### **Generation Targets**:
-1. **Missing Viewing Angles** (5 images):
-   - Left 3/4 profile (mirror of reference)
-   - Top view (overhead mounting points)
-   - Rear view (retention system)
-   - Bottom view (interior mounting)
-   - Interior view (padding and electronics)
+1. **Defect Pattern Generation** (using existing 2 angles):
+   - Right 3/4 profile with defect overlays (base: 13.3MP reference)
+   - Front view with defect overlays (base: 13.4MP reference)
 
-2. **Defect Variations** (45-60 images):
-   - Each of 15 defect patterns × 3-4 severity levels
-   - Applied to different helmet angles
+2. **Defect Variations** (30 images):
+   - Each of 15 defect patterns × 2 existing angles
+   - Multiple severity levels per defect type
    - Realistic inpainting with physics compliance
 
 3. **Accessory Variations** (10-15 images):
@@ -1386,9 +1389,9 @@ Total External Assets:       ~27GB
 - [x] Local model download preparation
 
 #### **📋 Ready for Generation Phase**:
-- [ ] Download SDXL models to external drive (~17GB)
-- [ ] Generate missing helmet viewing angles (5 images)
-- [ ] Create defect overlay variations (45-60 images)
+- [x] Simplified defect overlay approach (no heavy AI models needed)
+- [x] Use existing PURSUIT helmet angles (2 professional images)
+- [ ] Create defect overlay variations (30 images)
 - [ ] Validate and optimize final dataset
 - [ ] Update knowledge base with generated content
 

@@ -19,21 +19,20 @@ Essential scripts for data generation and knowledge base management in the Defen
 
 ---
 
-### **2. `download_image_models.py`**
-**Purpose**: Downloads Stable Diffusion XL models to external drive for local image generation
-**Usage**: `python download_image_models.py`
-**Downloads to**: `/Volumes/black box/defense-ai-models/image-generation/`
+### **2. `setup_defect_generation.py`**
+**Purpose**: Sets up directories for physics-based defect overlay generation
+**Usage**: `python setup_defect_generation.py`
+**Creates**: Directory structure for defect overlays on existing angles
 
-**What it downloads** (~17GB total):
-- Stable Diffusion XL Base (7GB) - Core image generation
-- SDXL Inpainting (7GB) - Defect overlay creation
-- ControlNet Canny (1.5GB) - Edge-guided generation
-- ControlNet Depth (1.5GB) - 3D perspective control
+**What it sets up**:
+- Output directories for defect variations
+- Image processing workspace
+- Quality validation structure
+- Basic dependencies check
 
 **Prerequisites**:
-- External drive "black box" mounted
-- 12GB+ available space
-- Python packages: `diffusers`, `transformers`, `torch`
+- External drive mounted and writable
+- Python packages: `PIL`, `opencv-python`, `numpy`
 
 ---
 
@@ -71,27 +70,19 @@ The following scripts served their purpose and were removed after successful dat
 # Ensure external drive is mounted
 ls "/Volumes/black box/"
 
-# Download SDXL models (one-time setup)
-python download_image_models.py
+# Set up defect generation directories
+python setup_defect_generation.py
 ```
 
-### **Phase 2: Generate Missing Helmet Angles**
-```python
-# Will be created: generate_helmet_variations.py
-# Uses: SDXL + ControlNet to generate left profile, top, rear, bottom views
-# Input: PURSUIT reference images (2 × 13.3MP)
-# Output: 5 additional viewing angles at 1024×1024
-```
-
-### **Phase 3: Create Defect Overlays**
+### **Phase 2: Create Defect Overlays**
 ```python
 # Will be created: generate_defect_overlays.py
-# Uses: SDXL Inpainting + physics-based patterns
-# Input: Clean helmet images + defect patterns database
-# Output: 45-60 realistic defected helmet variations
+# Uses: Physics-based defect patterns + image composition
+# Input: PURSUIT reference images (2 angles) + defect patterns database
+# Output: 30 realistic defected helmet variations
 ```
 
-### **Phase 4: Update Knowledge Base**
+### **Phase 3: Update Knowledge Base**
 ```bash
 # Integrate generated images into knowledge base
 python build_knowledge_base.py

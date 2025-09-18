@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Local Image Model Downloader
+Local Image Processing Setup
 
-Downloads open-source image generation models to external drive
-for PURSUIT helmet variation and defect generation.
+Sets up directories and basic tools for PURSUIT helmet defect overlay generation.
+Simplified approach: Use existing 2 angles + physics-based defect overlays.
 
-Models stored on external drive: /Volumes/black box/defense-ai-models/
+Storage location: /Volumes/black box - Backup Data 2020/defense-ai-models/
 """
 
 import os
