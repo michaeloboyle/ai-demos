@@ -55,15 +55,17 @@ DEFECT_TYPES = {
 }
 
 class DefectGenerator:
-    def __init__(self):
+    def __init__(self, output_dir=None, defect_database_path=None):
         self.defect_database = []
+        self.OUTPUT_DIR = output_dir or OUTPUT_DIR
+        self.DEFECT_DATABASE = defect_database_path or DEFECT_DATABASE
         self.setup_output_directory()
 
     def setup_output_directory(self):
         """Create output directory structure"""
-        os.makedirs(OUTPUT_DIR, exist_ok=True)
+        os.makedirs(self.OUTPUT_DIR, exist_ok=True)
         for defect_type in DEFECT_TYPES.keys():
-            os.makedirs(f"{OUTPUT_DIR}/{defect_type}", exist_ok=True)
+            os.makedirs(f"{self.OUTPUT_DIR}/{defect_type}", exist_ok=True)
 
     def load_base_image(self, image_path):
         """Load and validate base helmet image"""
@@ -431,8 +433,8 @@ class DefectGenerator:
             "defects": self.defect_database
         }
 
-        os.makedirs(os.path.dirname(DEFECT_DATABASE), exist_ok=True)
-        with open(DEFECT_DATABASE, 'w') as f:
+        os.makedirs(os.path.dirname(self.DEFECT_DATABASE), exist_ok=True)
+        with open(self.DEFECT_DATABASE, 'w') as f:
             json.dump(database, f, indent=2)
 
 def main():
