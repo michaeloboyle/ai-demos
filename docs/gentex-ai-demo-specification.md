@@ -1,15 +1,15 @@
-# Gentex AI Demo Portfolio - Technical Specification
+# Defense Manufacturing AI Demo Portfolio - Technical Specification
 
 ## Project Overview
 
-**Purpose**: Demonstrate AI/ML integration capabilities for Gentex Corporation IT Applications Principal interview
+**Purpose**: Demonstrate AI/ML integration capabilities for defense manufacturing IT applications
 **Format**: Self-contained Jupyter notebooks showcasing manufacturing-relevant AI solutions
 **Timeline**: 6.5 hours total development time
 **Delivery**: GitHub repository with 4 interactive notebooks
 
 ## Business Context
 
-Gentex Corporation manufactures defense and safety equipment including:
+This portfolio demonstrates practical AI applications for defense and safety equipment manufacturing including:
 - Ballistic helmets (SPH-4, ACH, PURSUIT)
 - Powered Air Purifying Respirators (PAPR)
 - Industrial respiratory protection systems
@@ -101,7 +101,7 @@ graph TD
 
 ## Demo Portfolio Structure
 
-### 1. Portfolio Launcher (`gentex_ai_portfolio.ipynb`)
+### 1. Portfolio Launcher (`defense_ai_portfolio.ipynb`)
 
 **Purpose**: Executive dashboard and demo navigation
 **Development Time**: 30 minutes
@@ -109,7 +109,7 @@ graph TD
 #### Components:
 ```python
 # Executive Summary Section
-- Company overview and AI opportunity assessment
+- Manufacturing AI opportunity assessment
 - Business value proposition for each demo
 - ROI calculator with realistic manufacturing metrics
 
@@ -125,7 +125,7 @@ graph TD
 ```
 
 #### User Experience:
-1. Professional introduction with Gentex context
+1. Professional introduction with defense manufacturing context
 2. One-click navigation to specific demos
 3. Business impact quantification
 4. Implementation roadmap visualization
@@ -149,7 +149,7 @@ from IPython.display import display, HTML
 import ipywidgets as widgets
 
 # External drive asset paths
-DEMO_ASSETS = os.environ.get('DEMO_ASSETS', '/Volumes/black box/gentex-demo-assets')
+DEMO_ASSETS = os.environ.get('DEMO_ASSETS', '/Volumes/black box/defense-ai-demo-assets')
 MIL_STANDARDS_PATH = f"{DEMO_ASSETS}/mil_standards"
 SAMPLE_CONTENT_PATH = f"{DEMO_ASSETS}/sample_content"
 ```
@@ -536,7 +536,7 @@ sequenceDiagram
 
 ```mermaid
 gantt
-    title Gentex AI Demo Development Timeline
+    title Defense AI Demo Development Timeline
     dateFormat  X
     axisFormat  %L
 
@@ -594,8 +594,8 @@ python scripts/setup_external.py
 # 4. Download models if needed
 
 # Manual setup (if script fails):
-export OLLAMA_MODELS="/Volumes/black box/gentex-demo-assets/models"
-export DEMO_ASSETS="/Volumes/black box/gentex-demo-assets"
+export OLLAMA_MODELS="/Volumes/black box/defense-ai-demo-assets/models"
+export DEMO_ASSETS="/Volumes/black box/defense-ai-demo-assets"
 
 # Install Ollama for model management
 brew install ollama
@@ -633,8 +633,8 @@ ollama serve
 ### File Structure & Source Control Strategy
 
 ```
-gentex-ai-demos/                       # Git repository (internal drive)
-├── gentex_ai_portfolio.ipynb          # Main launcher
+defense-ai-demos/                      # Git repository (internal drive)
+├── defense_ai_portfolio.ipynb         # Main launcher
 ├── compliance_demo.ipynb              # Compliance assistant
 ├── helmet_qc_demo.ipynb               # Quality control vision
 ├── field_support_demo.ipynb           # Field support chatbot
@@ -652,7 +652,7 @@ gentex-ai-demos/                       # Git repository (internal drive)
     ├── generate_assets.py             # Asset generation scripts
     └── setup_external.py              # External drive setup
 
-/Volumes/black box/gentex-demo-assets/  # Large assets (NOT in Git)
+/Volumes/black box/defense-ai-demo-assets/  # Large assets (NOT in Git)
 ├── models/                            # Downloaded via script (~10GB)
 ├── helmet_samples/                    # Generated via script (~500MB)
 ├── mil_standards/                     # Downloaded/generated (~100MB)
@@ -685,7 +685,7 @@ def get_asset_base_path():
     if platform.system() == "Darwin":  # macOS
         # Check for external drive first
         if os.path.exists("/Volumes/black box"):
-            return "/Volumes/black box/gentex-demo-assets"
+            return "/Volumes/black box/defense-ai-demo-assets"
 
     # Fallback to local directory for other systems
     return os.path.join(os.getcwd(), "local_assets")
@@ -834,11 +834,11 @@ flowchart TD
 
 ## Conclusion
 
-This specification outlines a comprehensive AI demo portfolio specifically designed for Gentex Corporation's manufacturing context. The self-contained Jupyter notebook approach ensures:
+This specification outlines a comprehensive AI demo portfolio specifically designed for defense manufacturing contexts. The self-contained Jupyter notebook approach ensures:
 
 1. **Professional Presentation**: Clean, interactive demos with clear business value
 2. **Technical Credibility**: Production-ready code demonstrating AI/ML expertise
-3. **Domain Relevance**: Manufacturing-specific use cases aligned with Gentex's products
+3. **Domain Relevance**: Manufacturing-specific use cases aligned with defense industry needs
 4. **Implementation Feasibility**: Realistic development timeline with concrete deliverables
 
-The portfolio demonstrates practical AI integration capabilities while showcasing understanding of Gentex's business challenges and opportunities.
+The portfolio demonstrates practical AI integration capabilities while showcasing understanding of defense manufacturing business challenges and opportunities.
