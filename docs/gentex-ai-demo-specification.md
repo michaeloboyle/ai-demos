@@ -832,122 +832,264 @@ This hybrid approach keeps the Git repository clean and collaborative while hand
 ## Data Requirements & Sourcing Strategy
 
 ### Overview
-This section identifies all data assets needed for the demo portfolio, their sources, and generation strategies. Total data volume: ~400MB (Git) + ~10GB (models).
+This section identifies all data assets needed for the demo portfolio, focusing on **programmatically accessible public data** and **high-quality synthetic generation** that supports actual AI analysis. Total data volume: ~400MB (Git) + ~10GB (models).
+
+### Data Quality Requirements
+- **Programmatically retrievable**: All data must be accessible via APIs, web scraping, or automated download
+- **Analysis-grade quality**: Generated content must be realistic enough for AI models to provide meaningful responses
+- **Demo reliability**: Data must support consistent, repeatable demonstrations
 
 ### 1. Military Standards Database (~100MB)
 
-#### **Required Standards:**
-- **MIL-DTL-44099**: Ballistic Helmet Requirements
-- **MIL-STD-662F**: V50 Ballistic Test Protocol
-- **MIL-STD-810G**: Environmental Engineering Considerations
-- **MIL-STD-1474D**: Noise Limits for Military Equipment
+#### **Programmatic Data Sources:**
+- **ASSIST Database**: https://assist.dla.mil/online/start/ (searchable API for public standards)
+- **Federal Standards**: https://www.gsa.gov/standards (programmatic access to FED-STD documents)
+- **NASA Technical Standards**: https://standards.nasa.gov (API access for space/defense standards)
+- **SAE Standards**: https://www.sae.org/standards/ (subset available via API)
 
-#### **Data Sources:**
-- **Public standards**: Available from Defense Standardization Program (DSP)
-- **Technical summaries**: Extract key requirements sections
-- **Compliance matrices**: Generate requirement-to-test mappings
-
-#### **Generation Strategy:**
+#### **Realistic Synthetic Generation Strategy:**
 ```python
 # scripts/generate_mil_standards.py
-def create_mil_standard_db():
-    """Generate structured MIL-STD database from public sources"""
-    standards = {
-        "MIL-DTL-44099": {
-            "title": "Ballistic Helmet Requirements",
-            "requirements": extract_requirements_from_pdf("MIL-DTL-44099.pdf"),
-            "test_methods": extract_test_procedures(),
-            "compliance_matrix": generate_compliance_checks()
+import requests
+from bs4 import BeautifulSoup
+
+def fetch_public_standards():
+    """Retrieve actual public military standards"""
+
+    # ASSIST Database API calls
+    assist_standards = fetch_from_assist_api([
+        "MIL-STD-810",  # Environmental Engineering (public)
+        "MIL-STD-461",  # EMC Requirements (public)
+        "MIL-STD-704"   # Aircraft Electric Power (public)
+    ])
+
+    # Generate realistic ballistic standards from publicly available safety standards
+    ballistic_requirements = synthesize_ballistic_standards(
+        base_standards=["ANSI Z87.1", "EN 397", "CPSC-1203"],
+        military_adaptations=["penetration_resistance", "fragmentation_protection"]
+    )
+
+    return structured_standards_database
+
+def create_realistic_compliance_matrix():
+    """Generate analysis-grade compliance requirements"""
+    return {
+        "ballistic_resistance": {
+            "v50_requirements": "1650-2000 fps (fragment simulation)",
+            "test_protocol": "17-grain fragment at specified velocity",
+            "acceptance_criteria": "No penetration, limited deformation"
+        },
+        "environmental": {
+            "temperature_range": "-40°F to +160°F operational",
+            "humidity": "95% RH at 95°F for 240 hours",
+            "shock_vibration": "MIL-STD-810 Method 514.6"
         }
     }
-    return standards
 ```
 
 ### 2. Equipment Knowledge Base (~200MB)
 
-#### **Required Equipment Data:**
-- **SPH-4 Aviation Helmets**: Procedures, troubleshooting, part numbers
-- **ACH Combat Helmets**: Maintenance guides, common issues
-- **PAPR Systems**: Filter specs, battery procedures, safety protocols
+#### **Programmatic Data Sources:**
+- **Wikipedia Aviation Safety**: https://en.wikipedia.org/wiki/Category:Aviation_safety (structured data via API)
+- **NTSB Aviation Database**: https://www.ntsb.gov/investigations/data/Pages/aviation.aspx (incident reports with equipment details)
+- **FAA Equipment Database**: https://registry.faa.gov/ (searchable aircraft/equipment registry)
+- **Patent Database**: https://patents.google.com/ (technical specifications for safety equipment)
 
-#### **Data Sources:**
-- **Technical manuals**: Synthesized from public military specs
-- **Troubleshooting guides**: Common field repair scenarios
-- **Part databases**: Representative part numbering systems
-
-#### **Generation Strategy:**
+#### **Analysis-Grade Generation Strategy:**
 ```python
 # scripts/generate_equipment_kb.py
-def create_equipment_database():
-    """Generate realistic equipment knowledge base"""
-    equipment = {
-        "SPH-4": {
-            "description": "Aviation helmet system for rotary-wing aircraft",
-            "common_issues": generate_realistic_issues(),
-            "field_repairs": create_repair_procedures(),
-            "part_numbers": generate_part_catalog(),
-            "safety_protocols": extract_safety_requirements()
+import wikipedia
+import requests
+from patent_parser import extract_technical_specs
+
+def build_realistic_equipment_kb():
+    """Generate equipment KB from public safety and aviation sources"""
+
+    # Extract real safety procedures from public sources
+    aviation_safety = wikipedia.page("Aviation safety equipment")
+    helmet_systems = extract_helmet_references(aviation_safety)
+
+    # Patent data for technical specifications
+    helmet_patents = search_patents([
+        "ballistic helmet", "aviation helmet", "protective headgear"
+    ])
+
+    equipment_kb = {
+        "SPH-4_type": {
+            "description": synthesize_from_patents(helmet_patents),
+            "common_issues": extract_from_ntsb_reports("helmet", "aviation"),
+            "maintenance": derive_from_civilian_equivalents(["HGU-84", "flight_helmet"]),
+            "part_numbers": generate_realistic_numbering_system(),
+            "troubleshooting": create_decision_tree_from_incident_data()
         }
     }
-    return equipment
+
+    return equipment_kb
+
+def extract_from_ntsb_reports(equipment_type, domain):
+    """Extract real maintenance issues from NTSB incident reports"""
+    ntsb_api = "https://data.ntsb.gov/carol-main-public/api-search-detail"
+    incidents = fetch_equipment_incidents(ntsb_api, equipment_type)
+
+    return {
+        "visor_cracking": extract_frequency_and_causes(incidents, "visor"),
+        "strap_failure": extract_failure_modes(incidents, "retention"),
+        "comm_issues": extract_electronics_problems(incidents, "communication")
+    }
 ```
 
 ### 3. Helmet Image Dataset (~50MB compressed, ~500MB full)
 
-#### **Required Images:**
-- **Clean helmets**: 20-30 pristine samples across helmet types
-- **Minor defects**: Scratches, scuff marks, minor wear
-- **Major defects**: Cracks, impact damage, structural issues
-- **Edge cases**: Lighting variations, angle differences
+#### **Programmatic Data Sources:**
+- **Wikimedia Commons**: https://commons.wikimedia.org/wiki/Category:Military_helmets (Creative Commons licensed)
+- **Smithsonian Open Access**: https://www.si.edu/openaccess (helmet artifacts with high-res images)
+- **NASA Image Gallery**: https://images.nasa.gov/ (space helmet systems, API access)
+- **Public Domain Equipment**: https://www.defense.gov/News/Photos/ (public military equipment photos)
 
-#### **Data Sources & Generation:**
-- **Synthetic generation**: Computer-generated helmet images with controlled defects
-- **Public domain**: Military equipment photos (properly licensed)
-- **Procedural defects**: Algorithmic scratch/crack pattern generation
-
-#### **Generation Strategy:**
+#### **Computer Vision Quality Generation:**
 ```python
 # scripts/generate_helmet_images.py
-def create_helmet_dataset():
-    """Generate synthetic helmet images with controlled defects"""
+import cv2
+import numpy as np
+from PIL import Image, ImageDraw, ImageFilter
+import requests
 
-    # Base helmet templates
-    base_images = create_helmet_templates()
+def create_analysis_grade_dataset():
+    """Generate helmet images realistic enough for computer vision analysis"""
 
-    # Defect application
-    for image in base_images:
-        clean_version = image.copy()
-        scratch_version = apply_scratches(image.copy(), severity='minor')
-        crack_version = apply_cracks(image.copy(), severity='major')
+    # Download base images from public sources
+    base_images = download_creative_commons_helmets([
+        "M1_helmet", "combat_helmet", "flight_helmet", "protective_headgear"
+    ])
 
-        # Multiple defect combinations
-        combined_defects = apply_multiple_defects(image.copy())
+    # Apply realistic defect simulation based on materials science
+    defect_simulator = DefectSimulator()
 
-    return dataset_with_labels
+    realistic_dataset = []
+    for base_image in base_images:
+        # Clean reference
+        clean = preprocess_for_cv(base_image)
+
+        # Physically accurate defects
+        scratched = defect_simulator.apply_metal_scratches(
+            clean, depth_variation=True, oxidation_patterns=True
+        )
+
+        cracked = defect_simulator.apply_impact_cracks(
+            clean, stress_concentration=True, propagation_patterns=True
+        )
+
+        # Multiple defect interactions (realistic aging)
+        aged = defect_simulator.apply_wear_patterns(
+            clean, use_hours=500, environmental_factors=["UV", "humidity", "temperature"]
+        )
+
+        realistic_dataset.extend([clean, scratched, cracked, aged])
+
+    return realistic_dataset
+
+class DefectSimulator:
+    def apply_metal_scratches(self, image, depth_variation=True, oxidation_patterns=True):
+        """Apply scratches with realistic material properties"""
+        # Use actual materials science data for scratch patterns
+        scratch_physics = {
+            "aluminum_alloy": {"hardness": 2.5, "scratch_width": "0.1-0.5mm"},
+            "kevlar_composite": {"hardness": 1.8, "delamination": True}
+        }
+
+        # Generate scratches following actual wear patterns from NTSB data
+        return apply_physics_based_scratches(image, scratch_physics)
+
+    def apply_impact_cracks(self, image, stress_concentration=True):
+        """Generate cracks using fracture mechanics principles"""
+        # Real crack propagation patterns from engineering data
+        crack_patterns = load_fracture_mechanics_data()
+        return simulate_impact_damage(image, crack_patterns)
 ```
 
 ### 4. Sample Content & Cached Responses (~50MB)
 
-#### **Required Content:**
-- **Compliance reports**: Pre-generated analysis results
-- **QC assessments**: Sample defect detection outputs
-- **Field responses**: Realistic troubleshooting conversations
-
-#### **Generation Strategy:**
+#### **AI-Analysis Quality Generation:**
 ```python
 # scripts/generate_sample_content.py
-def create_cached_responses():
-    """Generate realistic AI responses for offline demo reliability"""
+from transformers import pipeline
+import json
 
-    compliance_samples = generate_compliance_analyses()
-    qc_samples = generate_defect_reports()
-    chat_samples = generate_field_conversations()
+def generate_demo_grade_content():
+    """Pre-generate AI responses that demonstrate actual analysis capability"""
+
+    # Use actual AI models to generate realistic responses
+    llama_local = initialize_local_llama()
+    llava_local = initialize_local_llava()
+
+    # Generate compliance analyses using real standards data
+    compliance_reports = []
+    for standard in real_mil_standards:
+        analysis = llama_local.analyze_document(
+            document=standard["requirements"],
+            context="defense_manufacturing_compliance"
+        )
+        compliance_reports.append({
+            "standard": standard["name"],
+            "analysis": analysis,
+            "compliance_matrix": generate_traffic_light_assessment(analysis)
+        })
+
+    # Generate QC assessments using actual defect simulation
+    qc_assessments = []
+    for helmet_image in generated_helmet_images:
+        defect_analysis = llava_local.analyze_image(
+            image=helmet_image,
+            task="defect_detection",
+            context="manufacturing_quality_control"
+        )
+        qc_assessments.append({
+            "image_id": helmet_image.id,
+            "defects_found": defect_analysis["defects"],
+            "severity_assessment": defect_analysis["severity"],
+            "pass_fail_recommendation": defect_analysis["recommendation"]
+        })
+
+    # Generate field support conversations using equipment KB
+    field_conversations = []
+    for scenario in realistic_field_scenarios:
+        conversation = simulate_multi_turn_support(
+            initial_problem=scenario["problem"],
+            equipment_context=equipment_kb[scenario["equipment"]],
+            ai_assistant=llama_local
+        )
+        field_conversations.append(conversation)
 
     return {
-        "compliance_reports": compliance_samples,
-        "qc_analyses": qc_samples,
-        "field_responses": chat_samples
+        "compliance_reports": compliance_reports,
+        "qc_assessments": qc_assessments,
+        "field_conversations": field_conversations
     }
+
+def simulate_multi_turn_support(initial_problem, equipment_context, ai_assistant):
+    """Generate realistic multi-turn troubleshooting conversation"""
+    conversation = []
+    current_context = equipment_context
+
+    # Simulate 3-5 turn conversation with escalating detail
+    for turn in range(3, 6):
+        response = ai_assistant.generate_support_response(
+            problem=initial_problem,
+            context=current_context,
+            conversation_history=conversation
+        )
+
+        conversation.append({
+            "turn": turn,
+            "user_input": generate_realistic_follow_up(response),
+            "ai_response": response,
+            "context_used": extract_context_references(response)
+        })
+
+        # Update context based on response
+        current_context = update_context_from_response(current_context, response)
+
+    return conversation
 ```
 
 ### 5. AI Models (~10GB - External Drive)
@@ -993,34 +1135,100 @@ HELMET_DEFECT_SCHEMA = {
 
 ### Data Generation Automation
 
-#### **Master Generation Script:**
-```bash
+#### **Master Generation Script with Quality Validation:**
+```python
 # scripts/setup_all_data.py
+import subprocess
+import json
+from data_validators import validate_analysis_quality
+
 def setup_complete_dataset():
-    """Generate all required data assets"""
+    """Generate and validate all required data assets for AI analysis"""
 
-    print("Generating MIL standards database...")
-    generate_mil_standards()
+    print("Phase 1: Fetching public data sources...")
+    public_standards = fetch_public_standards()
+    public_equipment_data = scrape_ntsb_and_faa_data()
+    public_images = download_creative_commons_helmets()
 
-    print("Creating equipment knowledge base...")
-    generate_equipment_kb()
+    print("Phase 2: Generating analysis-grade synthetic data...")
+    mil_standards_db = synthesize_standards_from_public_data(public_standards)
+    equipment_kb = build_equipment_kb_from_incidents(public_equipment_data)
+    helmet_images = generate_cv_quality_defects(public_images)
 
-    print("Generating helmet image dataset...")
-    generate_helmet_images()
+    print("Phase 3: Pre-generating AI responses for cache...")
+    # Use actual AI models to generate realistic cached responses
+    sample_content = generate_ai_responses_with_local_models(
+        standards_db=mil_standards_db,
+        equipment_kb=equipment_kb,
+        helmet_images=helmet_images
+    )
 
-    print("Creating sample content...")
-    generate_sample_content()
+    print("Phase 4: Quality validation...")
+    validation_results = validate_dataset_for_ai_analysis({
+        "standards": mil_standards_db,
+        "equipment": equipment_kb,
+        "images": helmet_images,
+        "cached_responses": sample_content
+    })
 
-    print("Downloading AI models...")
-    download_ai_models()
+    if validation_results["analysis_ready"]:
+        print("✅ Dataset generation complete and validated for AI analysis!")
+    else:
+        print("❌ Dataset quality issues detected:")
+        for issue in validation_results["issues"]:
+            print(f"   - {issue}")
 
-    print("Dataset generation complete!")
+def validate_dataset_for_ai_analysis(dataset):
+    """Validate that generated data supports meaningful AI analysis"""
+
+    validation_results = {
+        "analysis_ready": True,
+        "issues": []
+    }
+
+    # Test standards database with actual compliance analysis
+    try:
+        compliance_test = test_compliance_analysis(dataset["standards"])
+        if not compliance_test["meaningful_output"]:
+            validation_results["issues"].append("Standards DB doesn't support compliance analysis")
+            validation_results["analysis_ready"] = False
+    except Exception as e:
+        validation_results["issues"].append(f"Standards analysis failed: {e}")
+        validation_results["analysis_ready"] = False
+
+    # Test image dataset with computer vision
+    try:
+        cv_test = test_defect_detection(dataset["images"])
+        if cv_test["detection_rate"] < 0.8:
+            validation_results["issues"].append("Image dataset defect detection rate too low")
+            validation_results["analysis_ready"] = False
+    except Exception as e:
+        validation_results["issues"].append(f"Computer vision test failed: {e}")
+        validation_results["analysis_ready"] = False
+
+    # Test equipment KB with field support scenarios
+    try:
+        kb_test = test_field_support_quality(dataset["equipment"])
+        if not kb_test["contextually_accurate"]:
+            validation_results["issues"].append("Equipment KB lacks sufficient detail for support")
+            validation_results["analysis_ready"] = False
+    except Exception as e:
+        validation_results["issues"].append(f"Equipment KB test failed: {e}")
+        validation_results["analysis_ready"] = False
+
+    return validation_results
+
+def test_compliance_analysis(standards_db):
+    """Test if standards database supports meaningful compliance analysis"""
+    # Use local AI model to analyze a sample standard
+    test_document = "Sample helmet specification with ballistic requirements..."
+    analysis_result = local_llama.analyze_compliance(test_document, standards_db)
+
+    return {
+        "meaningful_output": len(analysis_result["violations"]) > 0,
+        "specificity_score": calculate_analysis_specificity(analysis_result)
+    }
 ```
-
-#### **Validation & Quality Checks:**
-- **Data integrity**: Verify file formats and sizes
-- **Content quality**: Sample AI model responses for realism
-- **Demo functionality**: Test all notebooks with generated data
 
 This comprehensive data strategy ensures reliable demo execution while maintaining realistic content quality and appropriate file sizes for the hybrid Git + external drive approach.
 
