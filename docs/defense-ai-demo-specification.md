@@ -40,16 +40,16 @@ This portfolio demonstrates practical AI applications for defense and safety equ
 - **Embeddings**: all-MiniLM-L6-v2 (384 dimensions)
 - **Inference Server**: Ollama for unified model management
 
-#### Image Generation Models (External Drive)
-- **Base Generation**: Stable Diffusion XL (~7GB)
-- **Precision Control**: ControlNet Canny + Depth (~3GB)
-- **Defect Generation**: SDXL Inpainting (~7GB)
-- **Total Image Models**: ~17GB on `/Volumes/black box - Backup Data 2020/defense-ai-models/`
+#### Image Processing Tools (Local)
+- **Physics-Based Defect Generation**: Python + OpenCV + PIL
+- **Image Composition**: NumPy arrays for realistic overlay generation
+- **Pattern Libraries**: Pre-computed defect patterns based on materials science
+- **Storage Requirements**: Minimal - only generated images (~50MB)
 
 #### Memory Management Strategy
-- **Sequential Loading**: Unload Ollama during image generation
-- **Peak Usage**: 10-12GB during SDXL generation, 6-8GB for text/vision
-- **Model Switching**: <10 seconds between Ollama models, 30-60 seconds for SDXL loading
+- **Concurrent Operation**: Ollama + image processing can run simultaneously
+- **Peak Usage**: 6-8GB for text/vision models, <1GB for image processing
+- **Model Switching**: <10 seconds between Ollama models, instant for image processing
 
 ### Performance Specifications
 #### Core AI Performance
@@ -58,12 +58,12 @@ This portfolio demonstrates practical AI applications for defense and safety equ
 - **Document Processing**: 2-4 seconds per document
 - **Embedding Generation**: <1 second per query
 
-#### Image Generation Performance
-- **SDXL Generation**: 30-60 seconds per 1024×1024 image
-- **ControlNet Guidance**: +15-30 seconds additional processing
-- **Inpainting (Defects)**: 45-90 seconds per defect overlay
-- **Batch Generation**: 4-6 images simultaneously at 1024×1024
-- **Upscaling**: 10-20 seconds per 1024→2048 upscale
+#### Image Processing Performance
+- **Defect Overlay Generation**: <1 second per defected helmet image
+- **Physics-Based Pattern Application**: Real-time overlay composition
+- **Batch Generation**: 30 defect variations in <30 seconds
+- **High-Resolution Processing**: Works directly with 13.3MP source images
+- **No GPU Required**: Standard CPU image processing
 
 #### Memory Usage Profiles
 - **Text-only tasks**: 5-6GB RAM
@@ -625,7 +625,7 @@ export HF_HOME="/Volumes/black box - Backup Data 2020/defense-ai-models/huggingf
 # Install Ollama for model management
 brew install ollama
 
-# Download required models to external drive (total ~10GB)
+# Set up image processing tools (minimal dependencies)
 ollama pull llama3.1:8b-instruct-q4_K_M    # 4.9GB text model
 ollama pull llava:7b-v1.6-mistral-q4_0     # 4.4GB vision model
 
@@ -660,6 +660,7 @@ ollama serve
 
 #### **External Drive Assets (~10.5GB - models only):**
 - **AI Models**: ~10GB (Llama 3.1 + LLaVA 1.6) - **EXTERNAL ONLY**
+- **Image Processing**: <1MB (Python libraries included in requirements)
 - **Full Helmet Dataset**: ~500MB (generated as needed)
 - **Total External**: ~10.5GB (down from 11GB)
 
@@ -693,7 +694,7 @@ defense-ai-demos/                      # Git repository (~400MB total)
     ├── expand_datasets.py             # Generate full helmet dataset
     └── setup_external.py              # External drive setup
 
-/Volumes/black box/defense-ai-models/  # Models only (NOT in Git ~10GB)
+/Volumes/black box - Backup Data 2020/defense-ai-models/  # Models only (NOT in Git ~10GB)
 ├── llama3.1-8b-instruct-q4_K_M/      # Text model (~4.9GB)
 └── llava-7b-v1.6-mistral-q4_0/       # Vision model (~4.4GB)
 ```
@@ -707,7 +708,7 @@ defense-ai-demos/                      # Git repository (~400MB total)
 - **Collaborative**: Full team access with complete demo capability
 
 #### **External Assets (Not Tracked):**
-- **Size**: ~10GB (AI models only)
+- **Size**: ~10GB (AI models only - no image generation models needed)
 - **Content**: Large language and vision models via automation scripts
 - **Local**: Machine-specific model storage for inference
 - **Smart Loading**: Code automatically detects available models
@@ -862,7 +863,7 @@ This hybrid approach keeps the Git repository clean and collaborative while hand
 ## Data Requirements & Sourcing Strategy
 
 ### Overview
-This section identifies all data assets needed for the demo portfolio, focusing on **programmatically accessible public data** and **high-quality synthetic generation** that supports actual AI analysis. Total data volume: ~400MB (Git) + ~10GB (models).
+This section identifies all data assets needed for the demo portfolio, focusing on **programmatically accessible public data** and **physics-based defect generation** that supports actual AI analysis. Total data volume: ~400MB (Git) + ~10GB (models).
 
 ### Data Quality Requirements
 - **Programmatically retrievable**: All data must be accessible via APIs, web scraping, or automated download
@@ -1122,7 +1123,7 @@ def simulate_multi_turn_support(initial_problem, equipment_context, ai_assistant
     return conversation
 ```
 
-### 5. AI Models (~10GB - External Drive)
+### 5. AI Models (~10GB - External Drive - Text/Vision Only)
 
 #### **Required Models:**
 - **Llama 3.1 8B Instruct**: Text processing, compliance analysis
@@ -1316,16 +1317,16 @@ After extensive collection and verification, we now have **confirmed working dat
 **Storage Location**: `/Volumes/black box/defense-ai-models/image-generation/`
 
 #### **Primary Models**:
-- **Stable Diffusion XL Base**: 7GB (stabilityai/stable-diffusion-xl-base-1.0)
-- **SDXL Inpainting**: 7GB (diffusers/stable-diffusion-xl-1.0-inpainting-0.1)
-- **ControlNet Canny**: 1.5GB (diffusers/controlnet-canny-sdxl-1.0)
-- **ControlNet Depth**: 1.5GB (diffusers/controlnet-depth-sdxl-1.0)
-- **Total**: ~17GB on external drive
+- **Physics-Based Defect Algorithms**: Computational patterns (no model files)
+- **OpenCV Image Processing**: Standard Python library
+- **NumPy Array Operations**: Mathematical defect overlay generation
+- **PIL Image Composition**: High-resolution image manipulation
+- **Total**: <100MB (physics-based approach, no heavy AI models)
 
-#### **Image Resolution Strategy**:
+#### **Image Processing Strategy**:
 ```
-Reference (3560×3776) → Generation Input (1024×1024) → Final Output (2048×2048)
-   13.4MP, 6.5MB          16MB RAM, 30-60s gen        64MB RAM, upscaled
+Reference (3560×3776) → Defect Overlay → Final Output (3560×3776)
+   13.4MP, 6.5MB          <1s processing      13.4MP, physics-based defects
 ```
 
 #### **Generation Targets**:
@@ -1363,19 +1364,19 @@ assets/
 Total Git Assets:            ~850KB
 ```
 
-#### **External Drive Models** (~17GB):
+#### **External Drive Models** (~10GB):
 ```
-/Volumes/black box/defense-ai-models/
+/Volumes/black box - Backup Data 2020/defense-ai-models/
 ├── ollama/                  ~10GB (existing: Llama, LLaVA, embeddings)
-├── image-generation/        ~17GB (SDXL + ControlNet + Inpainting)
-├── generated-helmets/       ~100MB (50-80 generated images)
-Total External Assets:       ~27GB
+├── defect-generation/       <50MB (30 defect overlay images)
+├── huggingface-cache/       (cache directory)
+Total External Assets:       ~10GB (67% reduction from original plan)
 ```
 
-#### **Final Generated Dataset** (target):
-- **Total helmet images**: 70-80 high-quality images
-- **Resolution**: 1024×1024 for demos, 2048×2048 for finals
-- **Coverage**: Complete 360° views + comprehensive defect library
+#### **Final Generated Dataset** (simplified):
+- **Total helmet images**: 32 high-quality images (2 base + 30 defect variations)
+- **Resolution**: 3560×3776 (original reference resolution maintained)
+- **Coverage**: 2 professional angles + comprehensive defect library
 - **Use case**: Production-ready QC training dataset
 
 ### Data Verification Status
