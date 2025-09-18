@@ -701,6 +701,71 @@ def setup_asset_directories():
         os.makedirs(os.path.join(base_path, directory), exist_ok=True)
 ```
 
+### Repository Management Best Practices
+
+#### **Source Control Impact Summary:**
+
+**✅ Benefits of This Approach:**
+- **Small Git repo**: ~100MB vs 11GB (keeps GitHub free tier)
+- **Fast clones**: Quick repository access for collaboration
+- **Portable code**: Works across different environments
+- **Automated setup**: Scripts handle asset generation
+- **Version controlled logic**: All code and schemas tracked
+
+**⚠️ Trade-offs:**
+- **Setup complexity**: Initial asset generation required
+- **Asset regeneration**: Large files need to be recreated locally
+- **Documentation dependency**: Clear setup instructions critical
+
+**🔧 Implementation Benefits:**
+- **Environment detection**: Auto-configures paths based on available storage
+- **Graceful fallbacks**: Works without external drive (smaller assets)
+- **Collaboration friendly**: Other developers can run setup scripts
+- **Demo reliability**: Both live AI and cached fallback content
+
+#### **Recommended .gitignore Configuration:**
+```gitignore
+# Large AI models and assets (external drive content)
+/local_assets/
+*.gguf
+*.safetensors
+*.bin
+models/
+
+# Generated content
+/assets/generated/
+**/sample_content/compliance_reports/
+**/sample_content/qc_analyses/
+**/sample_content/field_responses/
+
+# Large image datasets
+**/helmet_samples/clean/
+**/helmet_samples/scratched/
+**/helmet_samples/cracked/
+**/helmet_samples/multiple_defects/
+
+# Jupyter notebook outputs (optional)
+*.ipynb_checkpoints/
+
+# Environment files
+.env
+.venv/
+*.pyc
+__pycache__/
+
+# macOS
+.DS_Store
+```
+
+#### **Development Workflow:**
+1. **Initial Setup**: `git clone` → `python scripts/setup_external.py`
+2. **Asset Generation**: Scripts download models and generate content
+3. **Development**: Work with notebooks, commit code changes only
+4. **Collaboration**: Other developers repeat setup process
+5. **Demo Preparation**: Verify external drive mounting and asset availability
+
+This hybrid approach keeps the Git repository clean and collaborative while handling the Mac Mini's storage constraints through automated asset management.
+
 ## Success Metrics
 
 ### Technical Metrics
@@ -752,16 +817,20 @@ flowchart TD
 - **Model Loading**: Sequential model management for 16GB RAM constraints
 - **Storage Limitations**: Internal drive insufficient - external drive required
 - **External Drive Dependency**: Models must be accessible on "black box" drive
+- **Asset Availability**: Large assets not in Git - must be generated locally
+- **Setup Complexity**: Initial environment requires script execution
 - **Performance**: Optimized inference with quantized models on external storage
 - **Dependencies**: Local model availability and Ollama service reliability
 - **Compatibility**: Tested on M2 Pro with macOS Sonoma
 
 ### Demo Risks
 - **External Drive Access**: Ensure "black box" drive mounted before demo start
+- **Asset Generation Failure**: Fallback content available for offline demos
 - **Model Performance**: Pre-warmed models and cached responses for smooth demos
 - **Time Constraints**: Modular demos for flexible presentation
 - **Technical Issues**: Backup static screenshots and fallback responses
 - **Memory Constraints**: Aggressive model unloading and restart procedures
+- **Collaboration Setup**: Clear documentation for team member onboarding
 
 ## Conclusion
 
