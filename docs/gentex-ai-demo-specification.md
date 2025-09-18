@@ -764,6 +764,266 @@ __pycache__/
 
 This hybrid approach keeps the Git repository clean and collaborative while handling the Mac Mini's storage constraints through automated asset management.
 
+### Docker Deployment Considerations
+
+#### **Docker Pros for This Project:**
+
+**✅ Environment Consistency**
+- **Reproducible builds**: Same Python/Jupyter environment across systems
+- **Dependency isolation**: No conflicts with host system packages
+- **Version locking**: Consistent package versions for reliable demos
+
+**✅ Deployment Simplification**
+- **One-command setup**: `docker-compose up` vs multi-step manual install
+- **Cross-platform**: Works on Windows/Linux without macOS-specific paths
+- **Demo reliability**: Identical environment for every presentation
+
+**✅ Model Management**
+- **Volume mounting**: Clean separation of models from container
+- **Service orchestration**: Ollama service + Jupyter in coordinated containers
+- **Resource limits**: Control memory allocation for 16GB constraint
+
+#### **Docker Cons for This Project:**
+
+**⚠️ Performance Impact**
+- **M2 Pro overhead**: Docker Desktop adds 2-4GB memory usage on macOS
+- **Inference slowdown**: Virtualization layer reduces AI model performance
+- **Storage overhead**: Base images + containers consume additional disk space
+
+**⚠️ Complexity for Jupyter**
+- **Port forwarding**: Additional network configuration for notebook access
+- **File permissions**: Volume mounting complications on macOS
+- **Interactive debugging**: More complex than native Jupyter development
+
+**⚠️ External Drive Complications**
+- **Volume mounting**: Complex path mapping for `/Volumes/black box/`
+- **Permission issues**: Docker user vs macOS file ownership conflicts
+- **Hot reload**: File watching may not work reliably with external volumes
+
+#### **Critical Issues for Mac Mini Use Case:**
+
+**🚫 Memory Constraints**
+- **Mac Mini 16GB**: Docker Desktop ~3GB + Models ~8GB = 11GB used before demos start
+- **Model switching**: Container restart required for sequential model loading
+- **Resource competition**: Docker overhead competes with AI inference needs
+
+**🚫 Demo Environment**
+- **Live presentation risk**: Docker failures more visible than native app crashes
+- **Network dependencies**: Container networking adds potential failure points
+- **Startup time**: Container initialization delays vs immediate Jupyter launch
+
+#### **Recommendation: Native Deployment**
+
+**Decision: Skip Docker for this project**
+
+**Why native Python + Ollama + Jupyter is optimal:**
+1. **Memory efficiency**: Every GB matters with sequential model loading on 16GB system
+2. **Performance**: Direct M2 Pro neural engine access for AI inference
+3. **Simplicity**: Fewer moving parts during live demonstrations
+4. **External drive**: Native macOS volume mounting is more reliable than Docker volumes
+5. **Demo reliability**: Reduced complexity decreases potential failure points
+
+**Docker would be valuable if:**
+- Deploying to production servers (not applicable for demo portfolio)
+- Supporting multiple platforms (Mac Mini specific deployment)
+- Managing complex microservices (single Jupyter environment)
+- Team has varying development environments (focused demo project)
+
+## Data Requirements & Sourcing Strategy
+
+### Overview
+This section identifies all data assets needed for the demo portfolio, their sources, and generation strategies. Total data volume: ~400MB (Git) + ~10GB (models).
+
+### 1. Military Standards Database (~100MB)
+
+#### **Required Standards:**
+- **MIL-DTL-44099**: Ballistic Helmet Requirements
+- **MIL-STD-662F**: V50 Ballistic Test Protocol
+- **MIL-STD-810G**: Environmental Engineering Considerations
+- **MIL-STD-1474D**: Noise Limits for Military Equipment
+
+#### **Data Sources:**
+- **Public standards**: Available from Defense Standardization Program (DSP)
+- **Technical summaries**: Extract key requirements sections
+- **Compliance matrices**: Generate requirement-to-test mappings
+
+#### **Generation Strategy:**
+```python
+# scripts/generate_mil_standards.py
+def create_mil_standard_db():
+    """Generate structured MIL-STD database from public sources"""
+    standards = {
+        "MIL-DTL-44099": {
+            "title": "Ballistic Helmet Requirements",
+            "requirements": extract_requirements_from_pdf("MIL-DTL-44099.pdf"),
+            "test_methods": extract_test_procedures(),
+            "compliance_matrix": generate_compliance_checks()
+        }
+    }
+    return standards
+```
+
+### 2. Equipment Knowledge Base (~200MB)
+
+#### **Required Equipment Data:**
+- **SPH-4 Aviation Helmets**: Procedures, troubleshooting, part numbers
+- **ACH Combat Helmets**: Maintenance guides, common issues
+- **PAPR Systems**: Filter specs, battery procedures, safety protocols
+
+#### **Data Sources:**
+- **Technical manuals**: Synthesized from public military specs
+- **Troubleshooting guides**: Common field repair scenarios
+- **Part databases**: Representative part numbering systems
+
+#### **Generation Strategy:**
+```python
+# scripts/generate_equipment_kb.py
+def create_equipment_database():
+    """Generate realistic equipment knowledge base"""
+    equipment = {
+        "SPH-4": {
+            "description": "Aviation helmet system for rotary-wing aircraft",
+            "common_issues": generate_realistic_issues(),
+            "field_repairs": create_repair_procedures(),
+            "part_numbers": generate_part_catalog(),
+            "safety_protocols": extract_safety_requirements()
+        }
+    }
+    return equipment
+```
+
+### 3. Helmet Image Dataset (~50MB compressed, ~500MB full)
+
+#### **Required Images:**
+- **Clean helmets**: 20-30 pristine samples across helmet types
+- **Minor defects**: Scratches, scuff marks, minor wear
+- **Major defects**: Cracks, impact damage, structural issues
+- **Edge cases**: Lighting variations, angle differences
+
+#### **Data Sources & Generation:**
+- **Synthetic generation**: Computer-generated helmet images with controlled defects
+- **Public domain**: Military equipment photos (properly licensed)
+- **Procedural defects**: Algorithmic scratch/crack pattern generation
+
+#### **Generation Strategy:**
+```python
+# scripts/generate_helmet_images.py
+def create_helmet_dataset():
+    """Generate synthetic helmet images with controlled defects"""
+
+    # Base helmet templates
+    base_images = create_helmet_templates()
+
+    # Defect application
+    for image in base_images:
+        clean_version = image.copy()
+        scratch_version = apply_scratches(image.copy(), severity='minor')
+        crack_version = apply_cracks(image.copy(), severity='major')
+
+        # Multiple defect combinations
+        combined_defects = apply_multiple_defects(image.copy())
+
+    return dataset_with_labels
+```
+
+### 4. Sample Content & Cached Responses (~50MB)
+
+#### **Required Content:**
+- **Compliance reports**: Pre-generated analysis results
+- **QC assessments**: Sample defect detection outputs
+- **Field responses**: Realistic troubleshooting conversations
+
+#### **Generation Strategy:**
+```python
+# scripts/generate_sample_content.py
+def create_cached_responses():
+    """Generate realistic AI responses for offline demo reliability"""
+
+    compliance_samples = generate_compliance_analyses()
+    qc_samples = generate_defect_reports()
+    chat_samples = generate_field_conversations()
+
+    return {
+        "compliance_reports": compliance_samples,
+        "qc_analyses": qc_samples,
+        "field_responses": chat_samples
+    }
+```
+
+### 5. AI Models (~10GB - External Drive)
+
+#### **Required Models:**
+- **Llama 3.1 8B Instruct**: Text processing, compliance analysis
+- **LLaVA 1.6 7B**: Vision analysis, defect detection
+- **all-MiniLM-L6-v2**: Embeddings for semantic search
+
+#### **Sourcing:**
+- **Ollama Hub**: Automated download via `ollama pull`
+- **Hugging Face**: Backup source for model files
+- **Quantized versions**: 4-bit quantization for memory efficiency
+
+#### **Download Strategy:**
+```bash
+# scripts/download_models.py
+ollama pull llama3.1:8b-instruct-q4_K_M
+ollama pull llava:7b-v1.6-mistral-q4_0
+pip install sentence-transformers  # Downloads MiniLM automatically
+```
+
+### 6. Configuration & Schema Files (~10MB)
+
+#### **Required Configurations:**
+- **Asset path mappings**: Environment-specific paths
+- **JSON schemas**: Data structure definitions
+- **Demo configurations**: Notebook cell execution order
+
+#### **Generation Strategy:**
+```python
+# config/schemas.py
+HELMET_DEFECT_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "defect_type": {"enum": ["scratch", "crack", "dent", "material_flaw"]},
+        "severity": {"enum": ["minor", "major", "critical"]},
+        "location": {"type": "array", "items": {"type": "number"}},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+    }
+}
+```
+
+### Data Generation Automation
+
+#### **Master Generation Script:**
+```bash
+# scripts/setup_all_data.py
+def setup_complete_dataset():
+    """Generate all required data assets"""
+
+    print("Generating MIL standards database...")
+    generate_mil_standards()
+
+    print("Creating equipment knowledge base...")
+    generate_equipment_kb()
+
+    print("Generating helmet image dataset...")
+    generate_helmet_images()
+
+    print("Creating sample content...")
+    generate_sample_content()
+
+    print("Downloading AI models...")
+    download_ai_models()
+
+    print("Dataset generation complete!")
+```
+
+#### **Validation & Quality Checks:**
+- **Data integrity**: Verify file formats and sizes
+- **Content quality**: Sample AI model responses for realism
+- **Demo functionality**: Test all notebooks with generated data
+
+This comprehensive data strategy ensures reliable demo execution while maintaining realistic content quality and appropriate file sizes for the hybrid Git + external drive approach.
+
 ## Success Metrics
 
 ### Technical Metrics
