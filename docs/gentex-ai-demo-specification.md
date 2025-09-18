@@ -619,60 +619,68 @@ jupyter nbextension enable --py widgetsnbextension
 ollama serve
 ```
 
-### Storage Requirements
-- **Internal Drive**: Only 19GB available (code only, ~50MB)
-- **External Drive**: 5.8TB available on "black box" (all assets ~11GB total)
-- **Asset Breakdown**:
-  - **AI Models**: ~10GB (Llama 3.1 + LLaVA 1.6)
-  - **Helmet Images**: ~500MB (sample datasets)
-  - **MIL Standards**: ~100MB (compliance database)
-  - **Equipment KB**: ~200MB (manuals and procedures)
-  - **Sample Content**: ~50MB (cached responses)
-  - **Total External**: ~11GB (well within 5.8TB capacity)
+### Optimized Storage Requirements
+
+#### **Git Repository Assets (~400MB - stays within GitHub limits):**
+- **MIL Standards DB**: ~100MB (essential for compliance demos)
+- **Equipment Manuals**: ~200MB (core knowledge base)
+- **Sample Content**: ~50MB (cached responses for offline reliability)
+- **Compressed Helmet Samples**: ~50MB (representative dataset for immediate demos)
+- **Total in Git**: ~400MB (well under 1GB GitHub limit)
+
+#### **External Drive Assets (~10.5GB - models only):**
+- **AI Models**: ~10GB (Llama 3.1 + LLaVA 1.6) - **EXTERNAL ONLY**
+- **Full Helmet Dataset**: ~500MB (generated as needed)
+- **Total External**: ~10.5GB (down from 11GB)
+
+#### **Benefits of Hybrid Approach:**
+- **Fast clones**: Repository includes most assets for immediate functionality
+- **Offline capable**: Core demos work without external drive
+- **Collaboration friendly**: Team members get full dataset on clone
+- **Model flexibility**: Only heavy AI models require external setup
 
 ### File Structure & Source Control Strategy
 
 ```
-defense-ai-demos/                      # Git repository (internal drive)
+defense-ai-demos/                      # Git repository (~400MB total)
 ├── defense_ai_portfolio.ipynb         # Main launcher
 ├── compliance_demo.ipynb              # Compliance assistant
 ├── helmet_qc_demo.ipynb               # Quality control vision
 ├── field_support_demo.ipynb           # Field support chatbot
 ├── requirements.txt                   # Python dependencies
 ├── README.md                          # Setup instructions
-├── .gitignore                         # Exclude large assets
+├── .gitignore                         # Exclude only AI models
 ├── config/
-│   └── asset_paths.py                 # Configurable asset paths
-├── assets/                            # Small assets (Git tracked)
-│   ├── sample_data/                   # Tiny demo samples (<1MB each)
-│   ├── schemas/                       # JSON schemas and templates
-│   └── fallback_content/              # Minimal offline fallbacks
+│   └── asset_paths.py                 # Smart path detection
+├── assets/                            # Core assets (Git tracked ~400MB)
+│   ├── mil_standards/                 # Compliance database (~100MB)
+│   ├── equipment_manuals/             # Knowledge base (~200MB)
+│   ├── sample_content/                # Cached responses (~50MB)
+│   ├── helmet_samples_compressed/     # Representative samples (~50MB)
+│   └── schemas/                       # JSON schemas and templates
 └── scripts/
-    ├── download_models.py             # Model download automation
-    ├── generate_assets.py             # Asset generation scripts
+    ├── download_models.py             # Model download to external drive
+    ├── expand_datasets.py             # Generate full helmet dataset
     └── setup_external.py              # External drive setup
 
-/Volumes/black box/defense-ai-demo-assets/  # Large assets (NOT in Git)
-├── models/                            # Downloaded via script (~10GB)
-├── helmet_samples/                    # Generated via script (~500MB)
-├── mil_standards/                     # Downloaded/generated (~100MB)
-├── equipment_manuals/                 # Generated content (~200MB)
-└── sample_content/                    # Cached responses (~50MB)
+/Volumes/black box/defense-ai-models/  # Models only (NOT in Git ~10GB)
+├── llama3.1-8b-instruct-q4_K_M/      # Text model (~4.9GB)
+└── llava-7b-v1.6-mistral-q4_0/       # Vision model (~4.4GB)
 ```
 
 ### Source Control Impact Analysis
 
 #### **Git Repository (Tracked):**
-- **Size**: ~50-100MB (notebooks + small samples + scripts)
-- **Content**: Source code, schemas, generation scripts, tiny samples
-- **Portable**: Works across different development environments
-- **Collaborative**: Full team access and version history
+- **Size**: ~400MB (notebooks + core assets + scripts)
+- **Content**: All demos ready to run, core datasets, knowledge bases
+- **Portable**: Most functionality works immediately after clone
+- **Collaborative**: Full team access with complete demo capability
 
 #### **External Assets (Not Tracked):**
-- **Size**: ~11GB (models, images, databases)
-- **Content**: Generated/downloaded content via automation scripts
-- **Local**: Machine-specific, regenerated as needed
-- **Excluded**: .gitignore prevents accidental commits
+- **Size**: ~10GB (AI models only)
+- **Content**: Large language and vision models via automation scripts
+- **Local**: Machine-specific model storage for inference
+- **Smart Loading**: Code automatically detects available models
 
 #### **Asset Management Strategy:**
 ```python
@@ -723,28 +731,18 @@ def setup_asset_directories():
 - **Collaboration friendly**: Other developers can run setup scripts
 - **Demo reliability**: Both live AI and cached fallback content
 
-#### **Recommended .gitignore Configuration:**
+#### **Simplified .gitignore Configuration:**
 ```gitignore
-# Large AI models and assets (external drive content)
-/local_assets/
+# AI models only (large files that must stay external)
 *.gguf
 *.safetensors
 *.bin
-models/
 
-# Generated content
-/assets/generated/
-**/sample_content/compliance_reports/
-**/sample_content/qc_analyses/
-**/sample_content/field_responses/
+# Generated expanded datasets (keep compressed versions in Git)
+/assets/helmet_samples_full/
+/local_models/
 
-# Large image datasets
-**/helmet_samples/clean/
-**/helmet_samples/scratched/
-**/helmet_samples/cracked/
-**/helmet_samples/multiple_defects/
-
-# Jupyter notebook outputs (optional)
+# Jupyter notebook outputs
 *.ipynb_checkpoints/
 
 # Environment files
@@ -757,12 +755,12 @@ __pycache__/
 .DS_Store
 ```
 
-#### **Development Workflow:**
-1. **Initial Setup**: `git clone` → `python scripts/setup_external.py`
-2. **Asset Generation**: Scripts download models and generate content
-3. **Development**: Work with notebooks, commit code changes only
-4. **Collaboration**: Other developers repeat setup process
-5. **Demo Preparation**: Verify external drive mounting and asset availability
+#### **Improved Development Workflow:**
+1. **Git Clone**: `git clone` → **Most demos work immediately** (~400MB of assets included)
+2. **AI Model Setup**: `python scripts/download_models.py` → Downloads only models to external drive
+3. **Full Functionality**: All demos now work with live AI + cached fallbacks
+4. **Development**: Work with notebooks, commit all changes including new assets (under size limits)
+5. **Collaboration**: Team members get 80% functionality on clone, 100% after model download
 
 This hybrid approach keeps the Git repository clean and collaborative while handling the Mac Mini's storage constraints through automated asset management.
 
