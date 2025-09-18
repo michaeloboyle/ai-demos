@@ -2259,7 +2259,252 @@ Claude Flow hivemind swarms transform TDD implementation from a linear developme
 
 The swarm approach is particularly valuable for this project because it combines **domain expertise** (defense manufacturing) with **technical specialization** (AI model integration, physics-based testing) in a coordinated development effort that dramatically reduces risk for executive-level demonstrations.
 
-## 13. Power Outage Recovery Strategy
+## 13. Swarm State Persistence with Git
+
+### **Core Concept**
+Git maintains complete swarm state through atomic commits after each significant change, enabling full recovery and resume on any machine.
+
+### **State Tracking Architecture**
+
+#### **What Gets Tracked**
+```yaml
+.swarm/
+├── state.json              # Current swarm execution state
+├── agents/                 # Agent-specific states
+│   ├── DefectAgent.json
+│   ├── NotebookAgent.json
+│   └── TestAgent.json
+├── notebooks/              # Notebook execution states
+│   ├── compliance_demo.state
+│   ├── helmet_qc_demo.state
+│   └── field_support.state
+├── todo.json               # Current todo list state
+└── checkpoint.log          # Execution history
+```
+
+#### **Git Commit Strategy**
+```bash
+# After EVERY swarm action:
+git add .swarm/ && git commit -m "Swarm: [Agent] completed [task]"
+
+# Examples:
+git commit -m "Swarm: DefectAgent generated 5 defect patterns"
+git commit -m "Swarm: NotebookAgent completed cell 3 of helmet_qc_demo"
+git commit -m "Swarm: TestAgent verified compliance_demo outputs"
+```
+
+### **Implementation**
+
+#### **1. Swarm State File** (`.swarm/state.json`)
+```json
+{
+  "session_id": "2025-09-18-16-51-36",
+  "current_task": "physics-defect-overlay-generation",
+  "active_agents": ["DefectAgent", "NotebookAgent"],
+  "progress": {
+    "notebooks_complete": 0,
+    "notebooks_partial": 1,
+    "notebooks_pending": 3,
+    "defects_generated": 0,
+    "defects_target": 30
+  },
+  "last_checkpoint": "2025-09-18T16:51:36.788Z",
+  "resume_point": "scripts/generate_defect_overlays.py:line_145"
+}
+```
+
+#### **2. Agent State Files** (`.swarm/agents/DefectAgent.json`)
+```json
+{
+  "agent": "DefectAgent",
+  "status": "active",
+  "current_task": "generating_ballistic_damage_overlay",
+  "completed_tasks": [
+    "loaded_pursuit_image_main_angle",
+    "initialized_physics_engine"
+  ],
+  "pending_tasks": [
+    "apply_ballistic_pattern",
+    "save_defected_image"
+  ],
+  "memory": {
+    "image_path": "assets/helmet_images/downloads/main_pursuit.png",
+    "defect_type": "ballistic_impact",
+    "severity": "moderate"
+  }
+}
+```
+
+#### **3. Notebook State Files** (`.swarm/notebooks/helmet_qc_demo.state`)
+```json
+{
+  "notebook": "helmet_qc_demo.ipynb",
+  "total_cells": 25,
+  "executed_cells": [1, 2, 3, 4],
+  "failed_cells": [],
+  "pending_cells": [5, 6, 7, 8, 9, 10],
+  "outputs_cached": true,
+  "kernel_state": "idle",
+  "variables_stored": ["model", "defect_patterns", "image_processor"]
+}
+```
+
+### **Automated Git Integration**
+
+#### **1. Post-Cell Execution Hook**
+```python
+# In each notebook cell:
+import subprocess
+import json
+
+def commit_swarm_state(action):
+    # Update state
+    with open('.swarm/state.json', 'r+') as f:
+        state = json.load(f)
+        state['last_action'] = action
+        f.seek(0)
+        json.dump(state, f, indent=2)
+
+    # Git commit
+    subprocess.run(['git', 'add', '.swarm/'])
+    subprocess.run(['git', 'commit', '-m', f'Swarm: {action}'])
+
+# After each cell:
+commit_swarm_state(f"Executed cell {cell_id} in {notebook_name}")
+```
+
+#### **2. Agent Action Commits**
+```javascript
+// In Claude Flow agents:
+function commitAgentAction(agent, action, result) {
+    const agentState = {
+        agent: agent.name,
+        action: action,
+        result: result,
+        timestamp: new Date().toISOString()
+    };
+
+    fs.writeFileSync(`.swarm/agents/${agent.name}.json`, JSON.stringify(agentState));
+
+    execSync(`git add .swarm/agents/${agent.name}.json`);
+    execSync(`git commit -m "Swarm: ${agent.name} ${action}"`);
+}
+```
+
+### **Resume Protocol**
+
+#### **1. Clone and Resume**
+```bash
+# On new machine:
+git clone <repo> ai-demos
+cd ai-demos
+
+# Check swarm state
+cat .swarm/state.json
+
+# Resume from exact point
+python scripts/resume_swarm.py --state=.swarm/state.json
+```
+
+#### **2. Resume Script** (`scripts/resume_swarm.py`)
+```python
+import json
+import subprocess
+
+def resume_swarm():
+    # Load state
+    with open('.swarm/state.json') as f:
+        state = json.load(f)
+
+    print(f"Resuming session: {state['session_id']}")
+    print(f"Current task: {state['current_task']}")
+    print(f"Resume point: {state['resume_point']}")
+
+    # Restart agents
+    for agent in state['active_agents']:
+        subprocess.run(['node', 'scripts/claude-flow/start-agent.js', agent])
+
+    # Resume notebooks
+    for notebook, status in state['notebooks'].items():
+        if status == 'partial':
+            print(f"Resuming {notebook} from cell {status['last_cell']}")
+            subprocess.run(['jupyter', 'notebook', notebook])
+```
+
+### **Benefits of Git-Based State**
+
+1. **Complete History**: Every swarm decision tracked
+2. **Time Travel**: Can revert to any previous state
+3. **Distributed**: Any team member can resume
+4. **Atomic**: Each action is isolated commit
+5. **Auditable**: Full execution trace for debugging
+6. **Branch-able**: Can explore alternate approaches
+
+### **Commit Frequency Guidelines**
+
+#### **Always Commit After:**
+- Notebook cell execution (success or failure)
+- Agent task completion
+- Model generation output
+- Test execution results
+- Todo list updates
+- Error recovery actions
+
+#### **Commit Message Format:**
+```
+Swarm: [Component] [Action] [Result]
+
+Examples:
+Swarm: DefectAgent generated impact_damage_01.png
+Swarm: NotebookAgent executed helmet_qc_demo cell 5/25
+Swarm: TestAgent PASSED compliance validation
+Swarm: System recovered from memory error
+```
+
+### **Storage Overhead**
+
+- **State files**: ~10-50KB per commit
+- **1000 commits**: ~10-50MB total
+- **Acceptable for**: Complete execution tracking
+- **Excluded from git**: Large model files, generated images
+
+### **Recovery Scenarios**
+
+#### **Power Outage**
+```bash
+git log --oneline -10  # See last actions
+cat .swarm/state.json  # Check exact state
+python scripts/resume_swarm.py
+```
+
+#### **New Developer Joins**
+```bash
+git clone <repo>
+git log --grep="Swarm:" --oneline  # See swarm history
+python scripts/resume_swarm.py --from-checkpoint
+```
+
+#### **Debugging Failure**
+```bash
+git bisect start
+git bisect bad  # Current state is broken
+git bisect good <commit>  # Known good state
+# Git finds exact commit where issue introduced
+```
+
+### **Integration with GitHub Issues**
+
+```bash
+# Link swarm states to issues
+git commit -m "Swarm: DefectAgent completed task #42
+
+Closes #42
+State: .swarm/state.json shows all 30 defects generated"
+```
+
+This approach makes the swarm state fully persistent, recoverable, and collaborative through standard git workflows.
+
+## 14. Power Outage Recovery Strategy
 
 ### **Risk Assessment**
 - **Mac Mini M2 Pro**: No built-in UPS protection
