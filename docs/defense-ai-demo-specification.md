@@ -1420,49 +1420,54 @@ Total External Assets:       ~10GB (67% reduction from original plan)
 flowchart TD
     Start([Demo Launch]) --> Check{Check Current Task}
 
-    Check -->|Compliance| LoadText[Load Llama 3.1 8B<br/>Unload Vision Models]
-    Check -->|Vision QC| LoadVision[Load LLaVA 1.6 7B<br/>Unload Text Models]
+    Check -->|Compliance| LoadText[Load Llama 3.1 8B<br/>Text Processing Mode]
+    Check -->|Vision QC| LoadVision[Load LLaVA 1.6 7B<br/>Vision Processing Mode]
     Check -->|Field Support| LoadText
+    Check -->|Defect Generation| LoadDefect[Load Image Processing<br/>Physics-Based Overlays]
 
     LoadText --> TextReady[Text Model Ready<br/>6GB Memory]
     LoadVision --> VisionReady[Vision Model Ready<br/>6GB Memory]
+    LoadDefect --> DefectReady[Image Processing Ready<br/><1GB Memory]
 
     TextReady --> ProcessText[Process Text/Chat]
     VisionReady --> ProcessVision[Process Images]
+    DefectReady --> ProcessDefects[Generate Defect Overlays<br/>30 variations in <30s]
 
     ProcessText --> TaskComplete{Task Complete?}
     ProcessVision --> TaskComplete
+    ProcessDefects --> TaskComplete
 
     TaskComplete -->|No| ProcessText
     TaskComplete -->|No| ProcessVision
-    TaskComplete -->|Yes| Unload[Unload Current Model]
-
-    Unload --> Check
+    TaskComplete -->|No| ProcessDefects
+    TaskComplete -->|Yes| Check
 
     style LoadText fill:#e1f5fe
     style LoadVision fill:#f3e5f5
+    style LoadDefect fill:#e8f5e8
     style TextReady fill:#e1f5fe
     style VisionReady fill:#f3e5f5
+    style DefectReady fill:#e8f5e8
 ```
 
 ### Technical Risks
-- **Model Loading**: Sequential model management for 16GB RAM constraints
-- **Storage Limitations**: Internal drive insufficient - external drive required
-- **External Drive Dependency**: Models must be accessible on "black box" drive
-- **Asset Availability**: Large assets not in Git - must be generated locally
-- **Setup Complexity**: Initial environment requires script execution
-- **Performance**: Optimized inference with quantized models on external storage
-- **Dependencies**: Local model availability and Ollama service reliability
+- **Model Loading**: Text and vision models can run concurrently (simplified memory management)
+- **Storage Requirements**: Only 10GB external drive needed (67% reduction from original plan)
+- **External Drive Dependency**: Only for Ollama models - defect generation works locally
+- **Asset Availability**: Physics-based generation creates assets in real-time (<30s)
+- **Setup Complexity**: Minimal - standard Python libraries only
+- **Performance**: Fast defect generation + optimized inference with quantized models
+- **Dependencies**: Reduced to Ollama + standard image processing libraries
 - **Compatibility**: Tested on M2 Pro with macOS Sonoma
 
 ### Demo Risks
-- **External Drive Access**: Ensure "black box" drive mounted before demo start
-- **Asset Generation Failure**: Fallback content available for offline demos
+- **External Drive Access**: Only required for Ollama models - defect generation works offline
+- **Asset Generation Speed**: Real-time generation in <30s eliminates pre-generation needs
 - **Model Performance**: Pre-warmed models and cached responses for smooth demos
 - **Time Constraints**: Modular demos for flexible presentation
 - **Technical Issues**: Backup static screenshots and fallback responses
-- **Memory Constraints**: Aggressive model unloading and restart procedures
-- **Collaboration Setup**: Clear documentation for team member onboarding
+- **Memory Benefits**: Concurrent operation possible - no model switching delays
+- **Collaboration Setup**: Simplified setup with standard Python libraries only
 
 ## Conclusion
 
