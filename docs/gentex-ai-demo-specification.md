@@ -53,22 +53,22 @@ Gentex Corporation manufactures defense and safety equipment including:
 graph TD
     subgraph "Mac Mini M2 Pro (16GB)"
         subgraph "Jupyter Environment"
-            PL[Portfolio Launcher]
-            CD[Compliance Demo]
-            HQ[Helmet QC Demo]
-            FS[Field Support Demo]
+            PL[Portfolio Launcher<br/>• Executive dashboard<br/>• ROI calculator<br/>• Demo navigation]
+            CD[Compliance Demo<br/>• MIL-STD validation<br/>• Document parsing<br/>• Traffic light matrix]
+            HQ[Helmet QC Demo<br/>• Computer vision<br/>• Defect detection<br/>• Visual overlays]
+            FS[Field Support Demo<br/>• Multi-turn chat<br/>• Equipment KB lookup<br/>• Part number search]
         end
 
         subgraph "Ollama Service"
-            LLM[Llama 3.1 8B<br/>Text Processing]
-            VLM[LLaVA 1.6 7B<br/>Vision Analysis]
-            EMB[MiniLM-L6-v2<br/>Embeddings]
+            LLM[Llama 3.1 8B<br/>• 4.9GB quantized<br/>• 15-25 tokens/sec<br/>• Document analysis]
+            VLM[LLaVA 1.6 7B<br/>• 4.4GB quantized<br/>• 3-5 sec/image<br/>• Defect detection]
+            EMB[MiniLM-L6-v2<br/>• 384 dimensions<br/>• Semantic search<br/>• Fast embedding]
         end
 
         subgraph "Data Layer"
-            MS[MIL Standards DB]
-            EK[Equipment KB]
-            HI[Helmet Images]
+            MS[MIL Standards DB<br/>• MIL-DTL-44099<br/>• MIL-STD-662F<br/>• MIL-STD-810G]
+            EK[Equipment KB<br/>• SPH-4 procedures<br/>• ACH troubleshooting<br/>• PAPR manuals]
+            HI[Helmet Images<br/>• Clean samples<br/>• Defect patterns<br/>• Synthetic data]
             SC[Sample Content<br/>• Cached AI responses<br/>• Demo screenshots<br/>• Fallback examples]
         end
     end
