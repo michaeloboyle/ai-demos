@@ -8,6 +8,7 @@ build/
 develop-eggs/
 dist/
 downloads/
+!assets/helmet_images/downloads/
 eggs/
 .eggs/
 lib/
