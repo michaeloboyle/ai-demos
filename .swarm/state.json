@@ -16,8 +16,8 @@
   "notebooks": {
     "compliance_demo.ipynb": {
       "status": "partial",
-      "cells_added": ["title", "architecture", "imports"],
-      "next_steps": ["configuration", "mil_std_data", "upload_interface"]
+      "cells_added": ["title", "architecture", "imports", "configuration", "mil_std_data", "upload_interface"],
+      "next_steps": ["analysis_engine", "compliance_matrix", "demo_runner"]
     }
   },
   "last_checkpoint": "2025-09-18T17:15:00.000Z",
