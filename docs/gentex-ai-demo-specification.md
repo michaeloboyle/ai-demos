@@ -22,18 +22,30 @@ Gentex Corporation manufactures defense and safety equipment including:
 ### Platform Requirements
 - **Environment**: Jupyter Notebook (.ipynb files)
 - **Python Version**: 3.8+
+- **Hardware**: Mac Mini M2 Pro (16GB unified memory)
 - **Core Dependencies**:
-  - `anthropic` (Claude API integration)
+  - `ollama` (local model serving)
+  - `transformers` (model loading)
+  - `sentence-transformers` (embeddings)
   - `opencv-python` (computer vision)
   - `matplotlib` (visualization)
   - `ipywidgets` (interactive components)
   - `pandas` (data manipulation)
   - `PIL/Pillow` (image processing)
 
-### API Requirements
-- **Claude API**: Anthropic API key for LLM integration
-- **Claude Vision**: Image analysis capabilities
-- **Rate Limits**: Standard tier sufficient for demo purposes
+### Local AI Stack
+- **Text Model**: Llama 3.1 8B (4.9GB quantized)
+- **Vision Model**: LLaVA 1.6 7B (4.4GB quantized)
+- **Embeddings**: all-MiniLM-L6-v2 (384 dimensions)
+- **Inference Server**: Ollama for unified model management
+- **Memory Management**: Sequential model loading to optimize 16GB RAM
+
+### Performance Specifications
+- **Text Generation**: 15-25 tokens/second
+- **Vision Analysis**: 3-5 seconds per image
+- **Document Processing**: 2-4 seconds per document
+- **Peak Memory Usage**: 6-8GB per active model
+- **Model Switching**: <10 seconds between tasks
 
 ## Demo Portfolio Structure
 
@@ -79,7 +91,8 @@ Gentex Corporation manufactures defense and safety equipment including:
 ##### Cell 1: Environment Setup
 ```python
 import re, pandas as pd, json
-from anthropic import Anthropic
+import ollama
+from sentence_transformers import SentenceTransformer
 from IPython.display import display, HTML
 import ipywidgets as widgets
 ```
@@ -107,26 +120,31 @@ mil_standards = {
 ```python
 def parse_spec_document(spec_text):
     """Extract structured requirements from specification document"""
-    # NLP processing using Claude API
+    # NLP processing using local Llama 3.1 model
     # Return categorized requirements list
 
 def extract_requirements(document):
     """Identify testable requirements and specifications"""
     # Pattern matching for technical specifications
     # Weight, dimensions, performance criteria
+    response = ollama.chat(model='llama3.1:8b-instruct-q4_K_M',
+                          messages=[{'role': 'user', 'content': f'Extract requirements: {document}'}])
 ```
 
 ##### Cell 4: Compliance Engine
 ```python
 def check_compliance(requirements, mil_standards):
     """Validate requirements against MIL-STD database"""
-    # Claude API integration for semantic matching
+    # Local semantic matching using sentence transformers
     # Generate compliance matrix with confidence scores
+    embedder = SentenceTransformer('all-MiniLM-L6-v2')
 
 def generate_compliance_report(results):
     """Create formatted compliance assessment"""
     # Traffic light system (Green/Yellow/Red)
-    # Detailed non-compliance explanations
+    # Detailed non-compliance explanations using Llama 3.1
+    report = ollama.chat(model='llama3.1:8b-instruct-q4_K_M',
+                        messages=[{'role': 'user', 'content': f'Generate compliance report: {results}'}])
 ```
 
 ##### Cell 5: Interactive Demo
@@ -176,7 +194,7 @@ import cv2, numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw, ImageFilter
 import base64, io
-from anthropic import Anthropic
+import ollama
 ```
 
 ##### Cell 2: Synthetic Data Generation
@@ -198,17 +216,24 @@ def add_crack_defect(image, severity='major'):
     # Depth variation simulation
 ```
 
-##### Cell 3: Claude Vision Integration
+##### Cell 3: LLaVA Vision Integration
 ```python
 def analyze_helmet_defects(image_path):
-    """Send helmet image to Claude Vision API"""
-    # Base64 encoding for API transmission
+    """Send helmet image to local LLaVA model"""
+    # Base64 encoding for model transmission
     # Structured prompt for defect identification
     # Return JSON with defect locations and classifications
+    with open(image_path, "rb") as img_file:
+        img_data = base64.b64encode(img_file.read()).decode()
+
+    response = ollama.chat(model='llava:7b-v1.6-mistral-q4_0',
+                          messages=[{'role': 'user',
+                                   'content': 'Analyze this helmet for defects',
+                                   'images': [img_data]}])
 
 def classify_defect_severity(defects):
     """Categorize defects by manufacturing impact"""
-    # Pass/Fail/Rework classifications
+    # Pass/Fail/Rework classifications using local model
     # Confidence scoring for each detection
 ```
 
@@ -270,7 +295,7 @@ analysis_output = widgets.Output()
 
 ##### Cell 1: Chatbot Infrastructure
 ```python
-from anthropic import Anthropic
+import ollama
 import ipywidgets as widgets
 from IPython.display import display, HTML, clear_output
 import json, datetime
@@ -304,13 +329,19 @@ equipment_kb = {
 ```python
 def field_support_chat(user_input, conversation_history, equipment_context):
     """Process field technician queries with equipment context"""
-    # Claude API with equipment-specific knowledge
+    # Local Llama 3.1 with equipment-specific knowledge
     # Multi-turn conversation capability
     # Context-aware responses with part numbers and procedures
 
+    messages = [{'role': 'system', 'content': f'Equipment context: {equipment_context}'}]
+    messages.extend(conversation_history)
+    messages.append({'role': 'user', 'content': user_input})
+
+    response = ollama.chat(model='llama3.1:8b-instruct-q4_K_M', messages=messages)
+
 def extract_equipment_type(query):
     """Identify relevant equipment from user query"""
-    # NLP processing to determine equipment type
+    # NLP processing using local model to determine equipment type
     # Return relevant knowledge base section
 ```
 
@@ -388,14 +419,21 @@ demo_scenarios = [
 
 ### Development Environment
 ```bash
-# Required Python packages
-pip install anthropic opencv-python matplotlib ipywidgets pandas pillow jupyter
+# Install Ollama for model management
+brew install ollama
 
-# API Configuration
-export ANTHROPIC_API_KEY="your_api_key_here"
+# Download required models
+ollama pull llama3.1:8b-instruct-q4_K_M    # 4.9GB text model
+ollama pull llava:7b-v1.6-mistral-q4_0     # 4.4GB vision model
+
+# Required Python packages
+pip install ollama transformers sentence-transformers opencv-python matplotlib ipywidgets pandas pillow jupyter
 
 # Jupyter Extensions
 jupyter nbextension enable --py widgetsnbextension
+
+# Start Ollama service
+ollama serve
 ```
 
 ### File Structure
@@ -430,16 +468,16 @@ gentex-ai-demos/
 ## Risk Mitigation
 
 ### Technical Risks
-- **API Availability**: Offline fallback with cached responses
-- **Performance**: Optimized image processing and caching
-- **Dependencies**: Minimal external library requirements
-- **Compatibility**: Tested across Python 3.8-3.11
+- **Model Loading**: Sequential model management for 16GB RAM constraints
+- **Performance**: Optimized inference with quantized models
+- **Dependencies**: Local model availability and Ollama service reliability
+- **Compatibility**: Tested on M2 Pro with macOS Sonoma
 
 ### Demo Risks
-- **Internet Connectivity**: Local data and cached examples
+- **Model Performance**: Pre-warmed models and cached responses for smooth demos
 - **Time Constraints**: Modular demos for flexible presentation
-- **Technical Issues**: Backup static screenshots for each demo
-- **Audience Engagement**: Interactive elements with clear business value
+- **Technical Issues**: Backup static screenshots and fallback responses
+- **Memory Constraints**: Aggressive model unloading and restart procedures
 
 ## Conclusion
 
