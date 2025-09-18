@@ -6,12 +6,13 @@
     "notebooks_complete": 1,
     "notebooks_partial": 0,
     "notebooks_pending": 3,
-    "defects_generated": 0,
+    "defects_generated": 60,
     "defects_target": 30,
     "specifications_complete": true,
     "documentation_complete": true,
     "data_collection_complete": true,
-    "compliance_demo_complete": true
+    "compliance_demo_complete": true,
+    "defect_generation_complete": true
   },
   "notebooks": {
     "compliance_demo.ipynb": {
